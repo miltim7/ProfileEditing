@@ -1,4 +1,47 @@
 /* src/assets/profile.css */
+/* Хлебные крошки */
+.breadcrumb-section {
+  padding: 20px 0 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.breadcrumb-container {
+  width: 1400px;
+  margin: 0 auto;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #9F9F9F;
+  margin: 0;
+}
+
+.breadcrumb-link {
+  color: #B2B2B2;
+  font-size: 14px;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.breadcrumb-link:hover {
+  color: #5856D2;
+}
+
+.breadcrumb-separator {
+  color: #D0D0D0;
+  font-size: 12px;
+}
+
+.breadcrumb-current {
+  color: #3F3F3F;
+  font-weight:400;
+  font-size: 14px;
+}
+
 .edit-profile-section {
   padding: 30px 0 5px 0;
   display: flex;
@@ -102,7 +145,6 @@
 
 .requirements li {
   margin-bottom: 12px;
-  line-height: 1.7;
 }
 
 .about-section {
@@ -307,11 +349,13 @@
   flex-direction: column;
 }
 
-.save-section .save-container {
+.save-section {
+  padding: 5px 0 60px 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   width: 1400px;
   margin: 0 auto;
-  display: flex;
-  justify-content: flex-start;
 }
 
 .save-btn-bottom {
@@ -326,6 +370,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
+  margin: 0;
 }
 
 .save-btn-bottom:hover {
@@ -336,10 +381,11 @@
 
 /* Большие планшеты и маленькие десктопы (1400px и меньше) */
 @media (max-width: 1400px) {
+  .breadcrumb-container,
   .edit-profile-container,
   .auth-container,
   .additional-container,
-  .save-section .save-container {
+  .save-section {
     width: 95%;
     max-width: 1400px;
   }
@@ -414,6 +460,14 @@
 
 /* Малые планшеты (768px и меньше) */
 @media (max-width: 768px) {
+  .breadcrumb-section {
+    padding: 15px 15px 5px 15px;
+  }
+
+  .breadcrumb {
+    font-size: 13px;
+  }
+
   .edit-profile-section,
   .auth-section,
   .additional-section {
@@ -465,7 +519,7 @@
   }
 
   .avatar-note {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .upload-instructions {
@@ -546,6 +600,7 @@
 
   .save-section {
     padding: 5px 15px 40px 15px;
+    width: 100%;
   }
 
   .save-btn-bottom {
@@ -558,6 +613,14 @@
 
 /* Мобильные телефоны (480px и меньше) */
 @media (max-width: 480px) {
+  .breadcrumb-section {
+    padding: 10px 10px 5px 10px;
+  }
+
+  .breadcrumb {
+    font-size: 12px;
+  }
+
   .edit-profile-section,
   .auth-section,
   .additional-section {
@@ -605,7 +668,7 @@
   }
 
   .avatar-note {
-    font-size: 9px;
+    font-size: 11px;
   }
 
   .upload-title {
@@ -658,6 +721,7 @@
 
   .save-section {
     padding: 5px 10px 30px 10px;
+    width: 100%;
   }
 
   .save-btn-bottom {
@@ -705,11 +769,6 @@
 
   .accounts-icons {
     gap: 8px;
-  }
-
-  .avatar-note {
-    font-size: 7px;
-    margin-top: 3px;
   }
 
   .account-icon {

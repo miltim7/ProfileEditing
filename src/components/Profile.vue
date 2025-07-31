@@ -1,5 +1,15 @@
 <!-- src/components/Profile.vue -->
 <template>
+  <section class="breadcrumb-section">
+    <div class="breadcrumb-container">
+      <nav class="breadcrumb">
+        <a href="#" class="breadcrumb-link">Главная</a>
+        <span class="breadcrumb-separator">››</span>
+        <span class="breadcrumb-current">Редактирование профиля</span>
+      </nav>
+    </div>
+  </section>
+
   <section class="edit-profile-section">
     <div class="edit-profile-container">
       <h1 class="edit-title">Редактирование профиля</h1>
@@ -110,7 +120,7 @@
       </div>
     </div>
   </section>
-  
+
   <section class="additional-section">
     <div class="additional-container">
       <h1 class="additional-title">Дополнительная информация</h1>
@@ -154,10 +164,10 @@
   </section>
 
   <section class="save-section">
-  <div class="save-container">
-    <button class="save-btn-bottom">Сохранить</button>
-  </div>
-</section>
+    <div class="save-container">
+      <button class="save-btn-bottom">Сохранить</button>
+    </div>
+  </section>
 </template>
 
 <script>
