@@ -83,6 +83,47 @@
   justify-content: center;
   color: #A3A0BF;
   font-size: 16px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.cover-placeholder:hover {
+  transform: scale(1.01);
+}
+
+.cover-placeholder.has-image {
+  background: transparent;
+}
+
+.cover-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.upload-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(88, 86, 210);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.cover-placeholder:hover .upload-overlay {
+  opacity: 1;
 }
 
 .avatar-container {
@@ -102,6 +143,32 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.avatar-placeholder:hover {
+  transform: scale(1.05);
+}
+
+.avatar-placeholder.has-image {
+  background: transparent;
+  padding: 0;
+  display: block;
+  overflow: hidden;
+}
+
+.avatar-image {
+  width: 170px;
+  height: 170px;
+  object-fit: contain;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .avatar-placeholder img {
@@ -111,12 +178,33 @@
   margin-top: 15px;
 }
 
+.avatar-placeholder.has-image .avatar-image {
+  width: 170px !important;
+  height: 170px !important;
+  object-fit: cover;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: 0 !important;
+}
+
 .avatar-note {
   font-size: 14px;
   color: #9A9AAD;
   text-align: center;
   line-height: 1.4;
   margin-top: 8px;
+}
+
+.avatar-overlay {
+  border-radius: 50%;
+  font-size: 12px;
+}
+
+.avatar-placeholder:hover .upload-overlay {
+  opacity: 1;
 }
 
 .upload-instructions {
@@ -159,12 +247,43 @@
 }
 
 .about-content {
+  position: relative;
+}
+
+.about-textarea {
+  width: 100%;
+  height: 120px;
   background: #F8F8FC;
-  color: #9F9F9F;
-  padding: 20px;
+  border: none;
   border-radius: 10px;
+  padding: 20px;
   font-size: 14px;
   line-height: 1.6;
+  color: #3F3F3F;
+  resize: vertical;
+  min-height: 80px;
+  max-height: 300px;
+  font-family: inherit;
+}
+
+.about-textarea::placeholder {
+  color: #9F9F9F;
+}
+
+.about-textarea:focus {
+  outline: 2px solid #5856D2;
+  outline-offset: -2px;
+}
+
+.char-counter {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  font-size: 12px;
+  color: #9F9F9F;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
 /* 2 секция */
@@ -210,8 +329,13 @@
   font-weight: 500;
 }
 
-.data-input {
+.input-wrapper {
+  position: relative;
   width: 477px;
+}
+
+.data-input {
+  width: 100%;
   height: 55px;
   background: #F8F8FC;
   border: none;
@@ -219,6 +343,7 @@
   padding: 0 20px;
   font-size: 14px;
   color: #3F3F3F;
+  transition: all 0.2s ease;
 }
 
 .data-input::placeholder {
@@ -228,9 +353,29 @@
   opacity: 1;
 }
 
+.data-input:focus {
+  outline: 2px solid #5856D2;
+  outline-offset: -2px;
+}
+
+.data-input.error {
+  border: 2px solid #e74c3c;
+  background: #fdf2f2;
+}
+
+.error-message {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  font-size: 12px;
+  color: #e74c3c;
+  margin-top: 4px;
+  white-space: nowrap;
+}
+
 .select-wrapper {
   position: relative;
-  width: 477px;
+  width: 100%;
 }
 
 .select-wrapper::after {
@@ -256,6 +401,22 @@
   color: #9F9F9F;
   appearance: none;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.data-select:focus {
+  outline: 2px solid #5856D2;
+  outline-offset: -2px;
+}
+
+.data-select.error {
+  border: 2px solid #e74c3c;
+  background: #fdf2f2;
+}
+
+.data-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* 3 секция */
@@ -335,18 +496,19 @@
   height: 40px;
   object-fit: contain;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 2px;
 }
 
 .account-icon:hover {
   transform: scale(1.1);
 }
 
-.save-section {
-  padding: 5px 0 60px 0;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+.account-icon.connected {
+  border-color: #5856D2;
+  background: rgba(88, 86, 210, 0.1);
 }
 
 .save-section {
@@ -369,12 +531,21 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
   margin: 0;
 }
 
 .save-btn-bottom:hover {
   background: #5D4EC7;
+}
+
+.save-btn-bottom:disabled {
+  background: #B2B2B2;
+  cursor: not-allowed;
+}
+
+.save-btn-bottom:disabled:hover {
+  background: #B2B2B2;
 }
 
 /* ========== АДАПТИВНЫЕ СТИЛИ ========== */
@@ -446,8 +617,7 @@
   }
 
   /* Формы */
-  .data-input,
-  .select-wrapper {
+  .input-wrapper {
     width: 400px;
   }
 
@@ -491,7 +661,7 @@
   /* Профиль - мобильная адаптация */
   .cover-block {
     height: 120px;
-    margin-bottom: 160px;
+    margin-bottom: 20px;
   }
 
   .cover-placeholder {
@@ -500,46 +670,52 @@
     padding: 10px;
   }
 
+  /* Убираем аватар из cover-block */
   .avatar-container {
-    left: 50%;
-    transform: translateX(-50%);
-    top: 100%;
-    margin-top: 20px;
+    display: none;
   }
 
-  .avatar-placeholder {
-    width: 120px;
-    height: 120px;
-    border: 4px solid #FFFFFF;
-  }
-
-  .avatar-placeholder img {
-    width: 45px;
-    height: 45px;
-  }
-
-  .avatar-note {
-    font-size: 12px;
-  }
-
+  /* Grid контейнер */
   .upload-instructions {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 20px;
+    align-items: start;
     padding-left: 0;
-    text-align: center;
     margin-bottom: 30px;
     margin-top: 20px;
   }
 
-  .upload-title {
-    font-size: 16px;
-    text-align: center;
+  .upload-instructions::before {
+    content: '';
+    width: 120px;
+    height: 120px;
+    background: #E9E7F5;
+    border-radius: 50%;
+    border: 4px solid #FFFFFF;
+    background-image: url('/images/famicons_person.png');
+    background-size: 45px 45px;
+    background-repeat: no-repeat;
+    background-position: center;
+    grid-column: 1;
+    grid-row: 1;
   }
 
   .requirements {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
     font-size: 13px;
-    text-align: center;
-    max-width: 350px;
-    margin: 0 auto;
+    text-align: left;
     list-style-position: inside;
+    align-self: start;
+    line-height: 1.6;
+  }
+
+  .upload-title {
+    font-size: 16px;
+    text-align: left;
+    margin-bottom: 10px;
   }
 
   .about-section {
@@ -550,9 +726,16 @@
     font-size: 18px;
   }
 
-  .about-content {
+  .about-textarea {
     font-size: 13px;
     padding: 15px;
+    height: 140px;
+  }
+
+  .char-counter {
+    bottom: 8px;
+    right: 12px;
+    font-size: 11px;
   }
 
   /* Формы - вертикальная раскладка */
@@ -571,21 +754,21 @@
     font-size: 13px;
   }
 
-  .data-input,
-  .select-wrapper {
+  .input-wrapper {
     width: 100%;
-    height: 50px;
   }
 
-  .data-input {
-    padding: 0 15px;
-    font-size: 13px;
-  }
-
+  .data-input,
   .data-select {
     height: 50px;
     padding: 0 15px;
     font-size: 13px;
+  }
+
+  .error-message {
+    position: static;
+    margin-top: 4px;
+    white-space: normal;
   }
 
   .accounts-icons {
@@ -613,166 +796,655 @@
 
 /* Мобильные телефоны (480px и меньше) */
 @media (max-width: 480px) {
-  .breadcrumb-section {
-    padding: 10px 10px 5px 10px;
+  .upload-instructions {
+    margin-top: 20px;
+    grid-template-columns: 100px 1fr;
+    gap: 15px;
   }
 
-  .breadcrumb {
-    font-size: 12px;
-  }
-
-  .edit-profile-section,
-  .auth-section,
-  .additional-section {
-    padding: 15px 10px 5px 10px;
-  }
-
-  .edit-profile-container,
-  .auth-container,
-  .additional-container {
-    padding: 20px 15px;
-    border-radius: 10px;
-  }
-
-  .edit-title,
-  .auth-title,
-  .additional-title {
-    font-size: 18px;
-    margin-bottom: 15px;
-  }
-
-  /* Профиль */
-  .cover-block {
-    height: 100px;
-    margin-bottom: 125px;
-  }
-
-  .cover-placeholder {
-    font-size: 12px;
-    padding: 8px;
-  }
-
-  .avatar-container {
-    top: 100%;
-    margin-top: 15px;
-  }
-
-  .avatar-placeholder {
+  .upload-instructions::before {
     width: 100px;
     height: 100px;
+    background-size: 35px 35px;
   }
 
-  .avatar-placeholder img {
-    width: 35px;
-    height: 35px;
-  }
-
-  .avatar-note {
-    font-size: 11px;
+  .requirements {
+    font-size: 12px;
+    line-height: 1.6;
   }
 
   .upload-title {
     font-size: 15px;
   }
+}
+
+/* Очень маленькие экраны (360px и меньше) */
+@media (max-width: 360px) {
+  .upload-instructions {
+    margin-top: 20px;
+    grid-template-columns: 80px 1fr;
+    gap: 12px;
+  }
+
+  .upload-instructions::before {
+    width: 80px;
+    height: 80px;
+    background-size: 28px 28px;
+  }
 
   .requirements {
-    font-size: 12px;
+    font-size: 11px;
+    line-height: 1.6;
   }
 
-  .requirements li {
-    margin-bottom: 8px;
-  }
-
-  .about-section h3 {
-    font-size: 16px;
-  }
-
-  .about-content {
-    font-size: 12px;
-    padding: 12px;
-  }
-
-  /* Формы */
-  .data-label,
-  .info-label,
-  .accounts-label {
-    font-size: 12px;
-  }
-
-  .data-input,
-  .data-select {
-    height: 45px;
-    font-size: 12px;
-    padding: 0 12px;
-  }
-
-  .data-input::placeholder {
-    font-size: 12px;
-  }
-
-  .accounts-icons {
-    gap: 10px;
-  }
-
-  .account-icon {
-    width: 32px;
-    height: 32px;
-  }
-
-  .save-section {
-    padding: 5px 10px 30px 10px;
-    width: 100%;
-  }
-
-  .save-btn-bottom {
-    height: 45px;
+  .upload-title {
     font-size: 14px;
+  }
+}
+
+.remove-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 15;
+}
+
+.remove-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+.avatar-placeholder:hover .avatar-remove,
+.cover-placeholder:hover .cover-remove {
+  opacity: 1;
+}
+
+.avatar-remove {
+  top: -2px;
+  right: -2px;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  z-index: 20;
+}
+
+/* Убираем overflow: hidden когда есть изображение */
+.avatar-placeholder.has-image {
+  background: transparent;
+  padding: 0;
+  display: block;
+  overflow: visible;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Модальное окно */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  width: 500px;
+  max-width: 90vw;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  padding: 32px 50px;
+  height: 240px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #3F3F3F;
+  text-align: center;
+}
+
+.modal-close {
+  position: absolute;
+  right: -44px;
+  top: -24px;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.modal-close:hover {
+  background: #E0E0E0;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.social-input {
+  width: 100%;
+  height: 56px;
+  background: #F8F8FC;
+  border: none;
+  border-radius: 12px;
+  padding: 0 20px;
+  font-size: 16px;
+  color: #3F3F3F;
+}
+
+.social-input::placeholder {
+  color: #B0B0B0;
+  font-size: 16px;
+}
+
+.social-input:focus {
+  outline: 2px solid #5856D2;
+  outline-offset: -2px;
+}
+
+.save-btn {
+  width: 100%;
+  height: 56px;
+  background: #5856D2;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.save-btn:hover {
+  background: #5D4EC7;
+}
+
+/* Адаптивность модалки */
+@media (max-width: 480px) {
+  .modal-content {
+    width: 95vw;
+    margin: 20px;
+    padding: 24px;
+  }
+}
+
+
+
+
+
+
+
+
+.tips-toggle {
+  background: #5856D2;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: all 0.3s ease;
+  display: none;
+  vertical-align: middle;
+}
+
+.tips-toggle:hover {
+  background: #5D4EC7;
+  transform: scale(1.1);
+}
+
+.tips-toggle.active {
+  background: #5D4EC7;
+}
+
+.upload-tips {
+  margin-top: 8px;
+}
+
+/* Показываем кнопку и скрываем desktop-tip ТОЛЬКО в мобильной версии */
+@media (max-width: 768px) {
+  .tips-toggle {
+    display: inline-block;
+  }
+  
+  .desktop-tip {
+    display: none;
+  }
+  
+  /* Центрируем заголовок когда tips НЕ показаны */
+  .requirements:not(.tips-expanded) {
+    display: flex;
+    align-items: center;
+    height: 120px;
+  }
+  
+  .requirements:not(.tips-expanded) .upload-title {
+    margin: 0;
+  }
+  
+  /* Когда tips показаны */
+  .requirements.tips-expanded {
+    display: block;
+    height: auto;
+  }
+  
+  .requirements.tips-expanded .upload-title {
+    margin-bottom: 10px;
+  }
+}
+
+/* 480px - уменьшаем текст и центрируем по аватарке */
+@media (max-width: 480px) {
+  .requirements:not(.tips-expanded) {
+    height: 100px;
+  }
+  
+  .requirements:not(.tips-expanded) .upload-title {
+    font-size: 14px;
+  }
+  
+  .requirements.tips-expanded .upload-title {
+    font-size: 14px;
+  }
+  
+  .tips-toggle {
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+  }
+}
+
+/* 360px - еще больше уменьшаем */
+@media (max-width: 360px) {
+  .requirements:not(.tips-expanded) {
+    height: 80px;
+  }
+  
+  .requirements:not(.tips-expanded) .upload-title {
+    font-size: 13px;
+  }
+  
+  .requirements.tips-expanded .upload-title {
+    font-size: 13px;
+  }
+  
+  .tips-toggle {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+  }
+}
+
+/* В десктопе скрываем мобильные tips */
+@media (min-width: 769px) {
+  .upload-tips {
+    display: none;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.rich-editor-wrapper {
+  border: 2px solid #5856D2;
+  border-radius: 10px;
+}
+
+.editor-toolbar {
+  background: #f8f9fa;
+  padding: 8px 12px;
+  border-bottom: 1px solid #ddd;
+  border-radius: 10px 10px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.editor-toolbar button {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 6px 8px;
+  cursor: pointer;
+  font-size: 14px;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #495057;
+  transition: all 0.2s ease;
+}
+
+.editor-toolbar button:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.editor-toolbar button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.separator {
+  color: #ccc;
+  margin: 0 4px;
+}
+
+.rich-editor {
+  min-height: 120px;
+  max-height: 250px;
+  padding: 20px;
+  outline: none;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #3F3F3F;
+  overflow-y: auto;
+}
+
+/* Стили для списков */
+.rich-editor ul {
+  padding-left: 25px;
+  margin: 10px 0;
+}
+
+.rich-editor ol {
+  padding-left: 25px;
+  margin: 10px 0;
+}
+
+.rich-editor li {
+  margin-bottom: 5px;
+}
+
+.rich-editor ul li {
+  list-style-position: outside;
+  list-style-type: disc;
+}
+
+.rich-editor ol li {
+  list-style-position: outside;
+  list-style-type: decimal;
+}
+
+/* ========== АДАПТИВНЫЕ СТИЛИ ========== */
+
+/* Планшеты (768px и меньше) */
+@media (max-width: 768px) {
+  .rich-editor-wrapper {
+    border-radius: 8px;
+  }
+  
+  .editor-toolbar {
+    padding: 6px 10px;
+    gap: 3px;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  .editor-toolbar button {
+    min-width: 28px;
+    height: 28px;
+    padding: 4px 6px;
+    font-size: 13px;
+  }
+  
+  .editor-toolbar button svg {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .separator {
+    margin: 0 3px;
+  }
+  
+  .rich-editor {
+    padding: 15px;
+    font-size: 13px;
+    min-height: 100px;
+    max-height: 200px;
+  }
+  
+  .rich-editor ul,
+  .rich-editor ol {
+    padding-left: 20px;
+    margin: 8px 0;
+  }
+}
+
+/* Мобильные (480px и меньше) */
+@media (max-width: 480px) {
+  .editor-toolbar {
+    padding: 5px 8px;
+    gap: 2px;
+  }
+  
+  .editor-toolbar button {
+    min-width: 24px;
+    height: 24px;
+    padding: 3px 4px;
+    font-size: 12px;
+  }
+  
+  .editor-toolbar button svg {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .separator {
+    margin: 0 2px;
+    font-size: 12px;
+  }
+  
+  .rich-editor {
+    padding: 12px;
+    font-size: 12px;
+    min-height: 80px;
+    line-height: 1.5;
+  }
+  
+  .rich-editor ul,
+  .rich-editor ol {
+    padding-left: 18px;
+    margin: 6px 0;
+  }
+  
+  .rich-editor li {
+    margin-bottom: 3px;
   }
 }
 
 /* Очень маленькие экраны (360px и меньше) */
 @media (max-width: 360px) {
-  .edit-profile-container,
-  .auth-container,
-  .additional-container {
-    padding: 15px 10px;
+  .editor-toolbar {
+    padding: 4px 6px;
+    gap: 1px;
   }
-
-  .cover-block {
-    height: 80px;
-    margin-bottom: 105px;
-  }
-
-  .cover-placeholder {
+  
+  .editor-toolbar button {
+    min-width: 20px;
+    height: 20px;
+    padding: 2px 3px;
     font-size: 11px;
   }
-
-  .avatar-container {
-    top: 100%;
-    margin-top: 10px;
+  
+  .editor-toolbar button svg {
+    width: 10px;
+    height: 10px;
   }
-
-  .avatar-placeholder {
-    width: 80px;
-    height: 80px;
+  
+  .separator {
+    margin: 0 1px;
+    font-size: 10px;
   }
-
-  .avatar-placeholder img {
-    width: 28px;
-    height: 28px;
+  
+  .rich-editor {
+    padding: 10px;
+    font-size: 11px;
+    min-height: 70px;
+    line-height: 1.4;
   }
-
-  .upload-instructions {
-    margin-bottom: 20px;
-    margin-top: 15px;
+  
+  .rich-editor ul,
+  .rich-editor ol {
+    padding-left: 15px;
+    margin: 5px 0;
   }
-
-  .accounts-icons {
-    gap: 8px;
+  
+  /* Скрываем некоторые кнопки на очень маленьких экранах */
+  .editor-toolbar button[title="Убрать отступ"],
+  .editor-toolbar button[title="Добавить отступ"] {
+    display: none;
   }
+}
 
-  .account-icon {
-    width: 28px;
-    height: 28px;
+/* Очень узкие экраны (320px и меньше) */
+@media (max-width: 320px) {
+  .editor-toolbar {
+    padding: 3px 5px;
+  }
+  
+  .editor-toolbar button {
+    min-width: 18px;
+    height: 18px;
+    padding: 1px 2px;
+  }
+  
+  .editor-toolbar button svg {
+    width: 9px;
+    height: 9px;
+  }
+  
+  .rich-editor {
+    padding: 8px;
+    font-size: 10px;
+    min-height: 60px;
+  }
+  
+  /* Скрываем больше кнопок */
+  .editor-toolbar button[title="Зачеркивание"],
+  .editor-toolbar button[title="По центру"],
+  .editor-toolbar button[title="По правому краю"] {
+    display: none;
+  }
+  
+  /* Группируем сепараторы */
+  .separator:nth-of-type(n+3) {
+    display: none;
+  }
+}
+
+/* Landscape ориентация для мобильных */
+@media (max-width: 768px) and (orientation: landscape) {
+  .rich-editor {
+    min-height: 60px;
+  }
+  
+  .editor-toolbar {
+    padding: 4px 8px;
+  }
+  
+  .editor-toolbar button {
+    min-width: 26px;
+    height: 26px;
+  }
+}
+
+/* Touch устройства - увеличиваем область нажатия */
+@media (hover: none) and (pointer: coarse) {
+  .editor-toolbar button {
+    min-width: 36px;
+    height: 36px;
+    padding: 8px;
+  }
+  
+  .editor-toolbar button svg {
+    width: 16px;
+    height: 16px;
   }
 }
