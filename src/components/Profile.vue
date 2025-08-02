@@ -564,7 +564,7 @@
     <div class="save-container">
       <button
         class="save-btn-bottom"
-        :disabled="!isFormValid || isSaving"
+        :disabled="isSaving"
         @click="saveProfile"
       >
         <span v-if="isSaving">Сохранение...</span>
@@ -682,15 +682,6 @@ export default {
 
       errors: {},
 
-      socialNetworks: [
-        { name: "telegram", icon: "/images/telegramm.png", connected: false },
-        { name: "facebook", icon: "/images/facebook.png", connected: false },
-        { name: "vk", icon: "/images/vk2.png", connected: false },
-        { name: "instagram", icon: "/images/instagramm.png", connected: false },
-        { name: "pinterest", icon: "/images/pinterest.png", connected: false },
-        { name: "website", icon: "/images/internet.png", connected: false },
-      ],
-
       citiesData: {
         russia: [
           { value: "moscow", label: "Москва" },
@@ -721,24 +712,6 @@ export default {
   computed: {
     availableCities() {
       return this.citiesData[this.formData.country] || [];
-    },
-
-    isFormValid() {
-      const requiredFields = [
-        "firstName",
-        "lastName",
-        "phone",
-        "country",
-        "city",
-        "postalCode",
-        "address",
-      ];
-      return requiredFields.every(
-        (field) =>
-          this.formData[field] &&
-          this.formData[field].trim() !== "" &&
-          !this.errors[field]
-      );
     },
   },
 
@@ -1107,26 +1080,6 @@ getIconSrc(social) {
     },
 
     async saveProfile() {
-      const fieldsToValidate = [
-        "firstName",
-        "lastName",
-        "phone",
-        "country",
-        "city",
-        "postalCode",
-        "address",
-      ];
-      fieldsToValidate.forEach((field) => this.validateField(field));
-
-      if (this.formData.bankCard) {
-        this.validateField("bankCard");
-      }
-
-      if (!this.isFormValid) {
-        alert("Пожалуйста, исправьте ошибки в форме");
-        return;
-      }
-
       this.isSaving = true;
 
       try {
