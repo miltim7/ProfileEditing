@@ -18,7 +18,7 @@
       <div class="cover-block">
         <div
           class="cover-placeholder"
-          :class="{ 'has-image': coverImageUrl, 'error': errors.coverImage }"
+          :class="{ 'has-image': coverImageUrl, error: errors.coverImage }"
           @click="triggerCoverUpload"
           @dragover.prevent
           @drop.prevent="handleCoverDrop"
@@ -49,7 +49,7 @@
         <div class="avatar-container">
           <div
             class="avatar-placeholder"
-            :class="{ 'has-image': avatarImageUrl, 'error': errors.avatarImage }"
+            :class="{ 'has-image': avatarImageUrl, error: errors.avatarImage }"
             @click="triggerAvatarUpload"
             @dragover.prevent
             @drop.prevent="handleAvatarDrop"
@@ -143,108 +143,185 @@
           </div>
 
           <!-- Rich editor -->
-          <div v-if="showRichEditor" class="rich-editor-wrapper" :class="{ error: errors.about }">
+          <div
+            v-if="showRichEditor"
+            class="rich-editor-wrapper"
+            :class="{ error: errors.about }"
+          >
             <div class="editor-toolbar">
               <button @click="execCommand('insertHTML', '<>')" title="Код">
                 <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path d="M4.5 3L1 8l3.5 5M11.5 3L15 8l-3.5 5" stroke="currentColor" fill="none" stroke-width="1.5"/>
+                  <path
+                    d="M4.5 3L1 8l3.5 5M11.5 3L15 8l-3.5 5"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-width="1.5"
+                  />
                 </svg>
               </button>
-              
+
               <button @click="execCommand('bold')" title="Жирный">
                 <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path d="M4 2h4c2.2 0 4 1.8 4 4 0 1.5-.8 2.8-2 3.4 1.6.5 2.8 2.1 2.8 3.8 0 2.4-1.9 4.3-4.3 4.3H4V2z" fill="currentColor"/>
+                  <path
+                    d="M4 2h4c2.2 0 4 1.8 4 4 0 1.5-.8 2.8-2 3.4 1.6.5 2.8 2.1 2.8 3.8 0 2.4-1.9 4.3-4.3 4.3H4V2z"
+                    fill="currentColor"
+                  />
                 </svg>
               </button>
-              
+
               <button @click="execCommand('italic')" title="Курсив">
                 <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path d="M6 2h6M4 14h6M9 2L7 14" stroke="currentColor" fill="none" stroke-width="1.5"/>
+                  <path
+                    d="M6 2h6M4 14h6M9 2L7 14"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-width="1.5"
+                  />
                 </svg>
               </button>
-              
+
               <button @click="execCommand('underline')" title="Подчеркивание">
                 <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path d="M4 3v4c0 2.2 1.8 4 4 4s4-1.8 4-4V3M2 14h12" stroke="currentColor" fill="none" stroke-width="1.5"/>
+                  <path
+                    d="M4 3v4c0 2.2 1.8 4 4 4s4-1.8 4-4V3M2 14h12"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-width="1.5"
+                  />
                 </svg>
               </button>
-              
+
               <button @click="execCommand('strikeThrough')" title="Зачеркивание">
                 <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path d="M12.5 3c-.7-1.2-2.2-2-4.5-2s-3.8.8-4.5 2M1 8h14M12.5 13c-.7 1.2-2.2 2-4.5 2s-3.8-.8-4.5-2" stroke="currentColor" fill="none" stroke-width="1.5"/>
+                  <path
+                    d="M12.5 3c-.7-1.2-2.2-2-4.5-2s-3.8.8-4.5 2M1 8h14M12.5 13c-.7 1.2-2.2 2-4.5 2s-3.8-.8-4.5-2"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-width="1.5"
+                  />
                 </svg>
               </button>
-              
+
               <span class="separator">|</span>
-              
-              <button @click="execCommand('insertUnorderedList')" title="Маркированный список">
+
+              <button
+                @click="execCommand('insertUnorderedList')"
+                title="Маркированный список"
+              >
                 <svg width="16" height="16" viewBox="0 0 16 16">
-                  <circle cx="3" cy="4" r="1" fill="currentColor"/>
-                  <circle cx="3" cy="8" r="1" fill="currentColor"/>
-                  <circle cx="3" cy="12" r="1" fill="currentColor"/>
-                  <path d="M7 4h8M7 8h8M7 12h8" stroke="currentColor" stroke-width="1.5"/>
+                  <circle cx="3" cy="4" r="1" fill="currentColor" />
+                  <circle cx="3" cy="8" r="1" fill="currentColor" />
+                  <circle cx="3" cy="12" r="1" fill="currentColor" />
+                  <path
+                    d="M7 4h8M7 8h8M7 12h8"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
                 </svg>
               </button>
-              
-              <button @click="execCommand('insertOrderedList')" title="Нумерованный список">
+
+              <button
+                @click="execCommand('insertOrderedList')"
+                title="Нумерованный список"
+              >
                 <svg width="16" height="16" viewBox="0 0 16 16">
                   <text x="2" y="6" font-size="8" fill="currentColor">1</text>
                   <text x="2" y="10" font-size="8" fill="currentColor">2</text>
                   <text x="2" y="14" font-size="8" fill="currentColor">3</text>
-                  <path d="M7 4h8M7 8h8M7 12h8" stroke="currentColor" stroke-width="1.5"/>
+                  <path
+                    d="M7 4h8M7 8h8M7 12h8"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
                 </svg>
               </button>
-              
+
               <button @click="execCommand('outdent')" title="Убрать отступ">
                 <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path d="M2 4h12M8 8h6M8 12h6M2 8l3 2-3 2z" stroke="currentColor" fill="currentColor" stroke-width="1.5"/>
+                  <path
+                    d="M2 4h12M8 8h6M8 12h6M2 8l3 2-3 2z"
+                    stroke="currentColor"
+                    fill="currentColor"
+                    stroke-width="1.5"
+                  />
                 </svg>
               </button>
-              
+
               <button @click="execCommand('indent')" title="Добавить отступ">
                 <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path d="M2 4h12M8 8h6M8 12h6M2 12l3-2-3-2z" stroke="currentColor" fill="currentColor" stroke-width="1.5"/>
+                  <path
+                    d="M2 4h12M8 8h6M8 12h6M2 12l3-2-3-2z"
+                    stroke="currentColor"
+                    fill="currentColor"
+                    stroke-width="1.5"
+                  />
                 </svg>
               </button>
-              
+
               <span class="separator">|</span>
-              
+
               <button @click="insertLink" title="Ссылка">
                 <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path d="M6.5 10.5L9.5 7.5M7 5.5L5.5 4C4.7 3.2 3.3 3.2 2.5 4S1.8 6.3 2.5 7l1.5 1.5M9 10.5l1.5 1.5c.8.8 2.2.8 3 0s.8-2.2 0-3L12 7.5" stroke="currentColor" fill="none" stroke-width="1.5"/>
+                  <path
+                    d="M6.5 10.5L9.5 7.5M7 5.5L5.5 4C4.7 3.2 3.3 3.2 2.5 4S1.8 6.3 2.5 7l1.5 1.5M9 10.5l1.5 1.5c.8.8 2.2.8 3 0s.8-2.2 0-3L12 7.5"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-width="1.5"
+                  />
                 </svg>
               </button>
-              
+
               <button @click="execCommand('justifyLeft')" title="По левому краю">
                 <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path d="M2 4h12M2 6h8M2 8h12M2 10h8M2 12h12" stroke="currentColor" stroke-width="1.5"/>
+                  <path
+                    d="M2 4h12M2 6h8M2 8h12M2 10h8M2 12h12"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
                 </svg>
               </button>
-              
+
               <button @click="execCommand('justifyCenter')" title="По центру">
                 <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path d="M2 4h12M4 6h8M2 8h12M4 10h8M2 12h12" stroke="currentColor" stroke-width="1.5"/>
+                  <path
+                    d="M2 4h12M4 6h8M2 8h12M4 10h8M2 12h12"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
                 </svg>
               </button>
-              
+
               <button @click="execCommand('justifyRight')" title="По правому краю">
                 <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path d="M2 4h12M6 6h8M2 8h12M6 10h8M2 12h12" stroke="currentColor" stroke-width="1.5"/>
+                  <path
+                    d="M2 4h12M6 6h8M2 8h12M6 10h8M2 12h12"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
                 </svg>
               </button>
-              
+
               <button @click="execCommand('removeFormat')" title="Убрать форматирование">
                 <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path d="M4 4h8M8 4v8M6 12h4" stroke="currentColor" stroke-width="1.5"/>
-                  <path d="M2 2l12 12" stroke="red" stroke-width="2"/>
+                  <path
+                    d="M4 4h8M8 4v8M6 12h4"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <path d="M2 2l12 12" stroke="red" stroke-width="2" />
                 </svg>
               </button>
-              
+
               <span class="separator">|</span>
-              
+
               <button @click="closeRichEditor" title="Закрыть">
                 <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path d="M4 6l4 4 4-4" stroke="currentColor" fill="none" stroke-width="2"/>
+                  <path
+                    d="M4 6l4 4 4-4"
+                    stroke="currentColor"
+                    fill="none"
+                    stroke-width="2"
+                  />
                 </svg>
               </button>
             </div>
@@ -283,7 +360,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="data-row">
           <div class="data-label">Фамилия</div>
           <div class="input-wrapper">
@@ -297,7 +374,7 @@
             <div v-if="errors.lastName" class="error-message">{{ errors.lastName }}</div>
           </div>
         </div>
-        
+
         <div class="data-row">
           <div class="data-label">Отчество</div>
           <div class="input-wrapper">
@@ -308,10 +385,12 @@
               placeholder="Ваше отчество"
               @blur="validateField('middleName')"
             />
-            <div v-if="errors.middleName" class="error-message">{{ errors.middleName }}</div>
+            <div v-if="errors.middleName" class="error-message">
+              {{ errors.middleName }}
+            </div>
           </div>
         </div>
-        
+
         <div class="data-row">
           <div class="data-label">Телефон</div>
           <div class="input-wrapper">
@@ -327,7 +406,7 @@
             <div v-if="errors.phone" class="error-message">{{ errors.phone }}</div>
           </div>
         </div>
-        
+
         <div class="data-row">
           <div class="data-label">Страна</div>
           <div class="input-wrapper">
@@ -349,7 +428,7 @@
             <div v-if="errors.country" class="error-message">{{ errors.country }}</div>
           </div>
         </div>
-        
+
         <div class="data-row">
           <div class="data-label">Город</div>
           <div class="input-wrapper">
@@ -374,7 +453,7 @@
             <div v-if="errors.city" class="error-message">{{ errors.city }}</div>
           </div>
         </div>
-        
+
         <div class="data-row">
           <div class="data-label">Индекс</div>
           <div class="input-wrapper">
@@ -392,7 +471,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="data-row">
           <div class="data-label">
             Адрес <br />
@@ -422,8 +501,8 @@
           <div class="info-label">Валюта</div>
           <div class="input-wrapper">
             <div class="select-wrapper" :class="{ error: errors.currency }">
-              <select 
-                v-model="formData.currency" 
+              <select
+                v-model="formData.currency"
                 class="data-select"
                 :class="{ error: errors.currency }"
                 @blur="validateField('currency')"
@@ -463,16 +542,18 @@
             </div>
             <div class="accounts-icons" :class="{ error: errors.socialNetworks }">
               <img
-                v-for="social in socialNetworks"
-                :key="social.name"
-                :src="social.icon"
-                :alt="social.name"
-                class="account-icon"
-                :class="{ connected: social.connected }"
-                @click="toggleSocialNetwork(social.name)"
-              />
+  v-for="social in socialNetworks"
+  :key="social.name"
+  :src="getIconSrc(social)"
+  :alt="social.name"
+  class="account-icon"
+  :class="{ connected: social.connected }"
+  @click="toggleSocialNetwork(social.name)"
+/>
             </div>
-            <div v-if="errors.socialNetworks" class="error-message">{{ errors.socialNetworks }}</div>
+            <div v-if="errors.socialNetworks" class="error-message">
+              {{ errors.socialNetworks }}
+            </div>
           </div>
         </div>
       </div>
@@ -511,7 +592,9 @@
             @keyup.enter="saveSocialConnection"
             @blur="validateSocialInput"
           />
-          <div v-if="errors.socialInput" class="error-message">{{ errors.socialInput }}</div>
+          <div v-if="errors.socialInput" class="error-message">
+            {{ errors.socialInput }}
+          </div>
         </div>
 
         <button class="modal-btn save-btn" @click="saveSocialConnection">
@@ -527,6 +610,45 @@ export default {
   name: "Profile",
   data() {
     return {
+      socialNetworks: [
+        {
+          name: "telegram",
+          icon: "/images/telegramm.png",
+          colorIcon: "/images/telegramm.png",
+          connected: false,
+        },
+        {
+          name: "facebook",
+          icon: "/images/facebook.png",
+          colorIcon: "/images/col-facebook.png",
+          connected: false,
+        },
+        {
+          name: "vk",
+          icon: "/images/vk2.png",
+          colorIcon: "/images/col-vk.png",
+          connected: false,
+        },
+        {
+          name: "instagram",
+          icon: "/images/instagramm.png",
+          colorIcon: "/images/col-instagramm.png",
+          connected: false,
+        },
+        {
+          name: "pinterest",
+          icon: "/images/pinterest.png",
+          colorIcon: "/images/col-pinterest.png",
+          connected: false,
+        },
+        {
+          name: "website",
+          icon: "/images/internet.png",
+          colorIcon: "/images/col-internet.png",
+          connected: false,
+        },
+      ],
+
       showRichEditor: false,
       showUploadTips: false,
       showSocialModal: false,
@@ -621,6 +743,21 @@ export default {
   },
 
   methods: {
+getIconSrc(social) {
+  if (!social.connected) return social.icon;
+  
+  const colorIcons = {
+    'facebook': '/images/col-facebook.png',
+    'vk': '/images/col-vk.png', 
+    'instagram': '/images/col-instagramm.png',
+    'pinterest': '/images/col-pinterest.png',
+    'website': '/images/col-internet.png',
+    'telegram': '/images/telegramm.png'
+  };
+  
+  return colorIcons[social.name] || social.icon;
+},
+    
     setFieldError(fieldName, message) {
       this.$set(this.errors, fieldName, message);
     },
@@ -634,7 +771,7 @@ export default {
     },
 
     setMultipleErrors(errorsObject) {
-      Object.keys(errorsObject).forEach(field => {
+      Object.keys(errorsObject).forEach((field) => {
         this.$set(this.errors, field, errorsObject[field]);
       });
     },
@@ -693,26 +830,27 @@ export default {
     openSocialModal(socialName) {
       this.currentSocial = socialName;
       this.showSocialModal = true;
-      this.clearFieldError('socialInput');
+      this.clearFieldError("socialInput");
     },
 
     closeSocialModal() {
       this.showSocialModal = false;
       this.currentSocial = null;
-      this.clearFieldError('socialInput');
+      this.clearFieldError("socialInput");
     },
 
     saveSocialConnection() {
       const credential = this.socialCredentials[this.currentSocial];
       if (!credential.trim()) {
-        this.setFieldError('socialInput', 'Поле не может быть пустым');
+        this.setFieldError("socialInput", "Поле не может быть пустым");
         return;
       }
-      
+
       const network = this.socialNetworks.find((n) => n.name === this.currentSocial);
       if (network) {
         network.connected = true;
         console.log(`${this.currentSocial} подключен: ${credential}`);
+        console.log("network after update:", network);
       }
       this.closeSocialModal();
     },
@@ -720,9 +858,9 @@ export default {
     validateSocialInput() {
       const credential = this.socialCredentials[this.currentSocial];
       if (!credential.trim()) {
-        this.setFieldError('socialInput', 'Поле не может быть пустым');
+        this.setFieldError("socialInput", "Поле не может быть пустым");
       } else {
-        this.clearFieldError('socialInput');
+        this.clearFieldError("socialInput");
       }
     },
 
@@ -753,13 +891,13 @@ export default {
     removeAvatar() {
       this.avatarImageUrl = null;
       this.$refs.avatarInput.value = "";
-      this.clearFieldError('avatarImage');
+      this.clearFieldError("avatarImage");
     },
 
     removeCover() {
       this.coverImageUrl = null;
       this.$refs.coverInput.value = "";
-      this.clearFieldError('coverImage');
+      this.clearFieldError("coverImage");
     },
 
     triggerCoverUpload() {
@@ -817,10 +955,10 @@ export default {
         img.onload = () => {
           if (type === "cover") {
             this.coverImageUrl = e.target.result;
-            this.clearFieldError('coverImage');
+            this.clearFieldError("coverImage");
           } else {
             this.avatarImageUrl = e.target.result;
-            this.clearFieldError('avatarImage');
+            this.clearFieldError("avatarImage");
           }
         };
         img.src = e.target.result;
@@ -865,7 +1003,10 @@ export default {
             } else if (spaceCount > 1) {
               this.setFieldError(fieldName, "Максимум один пробел");
             } else if (openBrackets !== closeBrackets || openBrackets > 1) {
-              this.setFieldError(fieldName, "Скобки должны быть парными и не более одной пары");
+              this.setFieldError(
+                fieldName,
+                "Скобки должны быть парными и не более одной пары"
+              );
             } else if (value.length < 5) {
               this.setFieldError(fieldName, "Номер слишком короткий");
             }
@@ -919,7 +1060,7 @@ export default {
           break;
 
         case "socialNetworks":
-          const connectedCount = this.socialNetworks.filter(n => n.connected).length;
+          const connectedCount = this.socialNetworks.filter((n) => n.connected).length;
           if (connectedCount === 0) {
             this.setFieldError(fieldName, "Подключите хотя бы одну социальную сеть");
           }
@@ -954,10 +1095,10 @@ export default {
     },
 
     toggleSocialNetwork(networkName) {
-      const network = this.socialNetworks.find((n) => n.name === networkName);
-      if (network) {
-        if (network.connected) {
-          network.connected = false;
+      const networkIndex = this.socialNetworks.findIndex((n) => n.name === networkName);
+      if (networkIndex !== -1) {
+        if (this.socialNetworks[networkIndex].connected) {
+          this.$set(this.socialNetworks[networkIndex], "connected", false);
           this.socialCredentials[networkName] = "";
         } else {
           this.openSocialModal(networkName);

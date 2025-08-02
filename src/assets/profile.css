@@ -543,18 +543,28 @@
   object-fit: contain;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 2px solid transparent;
-  border-radius: 8px;
+  border: none;
+  border-radius: 50%;
   padding: 2px;
+}
+
+.account-icon.connected {
+  border: none;
+  background: none;
+}
+
+/* .account-icon[alt="telegram"] {
+  padding: 10px;
+  background-color: #EDEDFA;
+} */
+
+.account-icon.connected[alt="pinterest"] {
+  padding: 8px;
+  background-color: #EDEDFA;
 }
 
 .account-icon:hover {
   transform: scale(1.1);
-}
-
-.account-icon.connected {
-  border-color: #5856D2;
-  background: rgba(88, 86, 210, 0.1);
 }
 
 .save-section {
