@@ -18,7 +18,7 @@
       <div class="cover-block">
         <div
           class="cover-placeholder"
-          :class="{ 'has-image': coverImageUrl }"
+          :class="{ 'has-image': coverImageUrl, 'error': errors.coverImage }"
           @click="triggerCoverUpload"
           @dragover.prevent
           @drop.prevent="handleCoverDrop"
@@ -41,12 +41,15 @@
             ✕
           </button>
         </div>
+        <div v-if="errors.coverImage" class="error-message field-error">
+          {{ errors.coverImage }}
+        </div>
 
         <!-- Аватар -->
         <div class="avatar-container">
           <div
             class="avatar-placeholder"
-            :class="{ 'has-image': avatarImageUrl }"
+            :class="{ 'has-image': avatarImageUrl, 'error': errors.avatarImage }"
             @click="triggerAvatarUpload"
             @dragover.prevent
             @drop.prevent="handleAvatarDrop"
@@ -71,6 +74,9 @@
             >
               ✕
             </button>
+          </div>
+          <div v-if="errors.avatarImage" class="error-message field-error">
+            {{ errors.avatarImage }}
           </div>
         </div>
       </div>
@@ -122,126 +128,135 @@
         <h3>О магазине:</h3>
         <div class="about-content">
           <!-- Простая textarea -->
-          <textarea
-            v-if="!showRichEditor"
-            v-model="formData.about"
-            placeholder="Расскажите о своем магазине..."
-            class="about-textarea"
-            @focus="openRichEditor"
-          ></textarea>
+          <div class="field-wrapper">
+            <textarea
+              v-if="!showRichEditor"
+              v-model="formData.about"
+              placeholder="Расскажите о своем магазине..."
+              class="about-textarea"
+              :class="{ error: errors.about }"
+              @focus="openRichEditor"
+            ></textarea>
+            <div v-if="errors.about && !showRichEditor" class="error-message field-error">
+              {{ errors.about }}
+            </div>
+          </div>
 
           <!-- Rich editor -->
-          <div v-if="showRichEditor" class="rich-editor-wrapper">
+          <div v-if="showRichEditor" class="rich-editor-wrapper" :class="{ error: errors.about }">
             <div class="editor-toolbar">
-  <button @click="execCommand('insertHTML', '<>')" title="Код">
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <path d="M4.5 3L1 8l3.5 5M11.5 3L15 8l-3.5 5" stroke="currentColor" fill="none" stroke-width="1.5"/>
-    </svg>
-  </button>
-  
-  <button @click="execCommand('bold')" title="Жирный">
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <path d="M4 2h4c2.2 0 4 1.8 4 4 0 1.5-.8 2.8-2 3.4 1.6.5 2.8 2.1 2.8 3.8 0 2.4-1.9 4.3-4.3 4.3H4V2z" fill="currentColor"/>
-    </svg>
-  </button>
-  
-  <button @click="execCommand('italic')" title="Курсив">
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <path d="M6 2h6M4 14h6M9 2L7 14" stroke="currentColor" fill="none" stroke-width="1.5"/>
-    </svg>
-  </button>
-  
-  <button @click="execCommand('underline')" title="Подчеркивание">
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <path d="M4 3v4c0 2.2 1.8 4 4 4s4-1.8 4-4V3M2 14h12" stroke="currentColor" fill="none" stroke-width="1.5"/>
-    </svg>
-  </button>
-  
-  <button @click="execCommand('strikeThrough')" title="Зачеркивание">
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <path d="M12.5 3c-.7-1.2-2.2-2-4.5-2s-3.8.8-4.5 2M1 8h14M12.5 13c-.7 1.2-2.2 2-4.5 2s-3.8-.8-4.5-2" stroke="currentColor" fill="none" stroke-width="1.5"/>
-    </svg>
-  </button>
-  
-  <span class="separator">|</span>
-  
-  <button @click="execCommand('insertUnorderedList')" title="Маркированный список">
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <circle cx="3" cy="4" r="1" fill="currentColor"/>
-      <circle cx="3" cy="8" r="1" fill="currentColor"/>
-      <circle cx="3" cy="12" r="1" fill="currentColor"/>
-      <path d="M7 4h8M7 8h8M7 12h8" stroke="currentColor" stroke-width="1.5"/>
-    </svg>
-  </button>
-  
-  <button @click="execCommand('insertOrderedList')" title="Нумерованный список">
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <text x="2" y="6" font-size="8" fill="currentColor">1</text>
-      <text x="2" y="10" font-size="8" fill="currentColor">2</text>
-      <text x="2" y="14" font-size="8" fill="currentColor">3</text>
-      <path d="M7 4h8M7 8h8M7 12h8" stroke="currentColor" stroke-width="1.5"/>
-    </svg>
-  </button>
-  
-  <button @click="execCommand('outdent')" title="Убрать отступ">
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <path d="M2 4h12M8 8h6M8 12h6M2 8l3 2-3 2z" stroke="currentColor" fill="currentColor" stroke-width="1.5"/>
-    </svg>
-  </button>
-  
-  <button @click="execCommand('indent')" title="Добавить отступ">
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <path d="M2 4h12M8 8h6M8 12h6M2 12l3-2-3-2z" stroke="currentColor" fill="currentColor" stroke-width="1.5"/>
-    </svg>
-  </button>
-  
-  <span class="separator">|</span>
-  
-  <button @click="insertLink" title="Ссылка">
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <path d="M6.5 10.5L9.5 7.5M7 5.5L5.5 4C4.7 3.2 3.3 3.2 2.5 4S1.8 6.3 2.5 7l1.5 1.5M9 10.5l1.5 1.5c.8.8 2.2.8 3 0s.8-2.2 0-3L12 7.5" stroke="currentColor" fill="none" stroke-width="1.5"/>
-    </svg>
-  </button>
-  
-  <button @click="execCommand('justifyLeft')" title="По левому краю">
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <path d="M2 4h12M2 6h8M2 8h12M2 10h8M2 12h12" stroke="currentColor" stroke-width="1.5"/>
-    </svg>
-  </button>
-  
-  <button @click="execCommand('justifyCenter')" title="По центру">
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <path d="M2 4h12M4 6h8M2 8h12M4 10h8M2 12h12" stroke="currentColor" stroke-width="1.5"/>
-    </svg>
-  </button>
-  
-  <button @click="execCommand('justifyRight')" title="По правому краю">
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <path d="M2 4h12M6 6h8M2 8h12M6 10h8M2 12h12" stroke="currentColor" stroke-width="1.5"/>
-    </svg>
-  </button>
-  
-  <button @click="execCommand('removeFormat')" title="Убрать форматирование">
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <path d="M4 4h8M8 4v8M6 12h4" stroke="currentColor" stroke-width="1.5"/>
-      <path d="M2 2l12 12" stroke="red" stroke-width="2"/>
-    </svg>
-  </button>
-  
-  <span class="separator">|</span>
-  
-  <button @click="closeRichEditor" title="Закрыть">
-    <svg width="16" height="16" viewBox="0 0 16 16">
-      <path d="M4 6l4 4 4-4" stroke="currentColor" fill="none" stroke-width="2"/>
-    </svg>
-  </button>
-</div>
+              <button @click="execCommand('insertHTML', '<>')" title="Код">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M4.5 3L1 8l3.5 5M11.5 3L15 8l-3.5 5" stroke="currentColor" fill="none" stroke-width="1.5"/>
+                </svg>
+              </button>
+              
+              <button @click="execCommand('bold')" title="Жирный">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M4 2h4c2.2 0 4 1.8 4 4 0 1.5-.8 2.8-2 3.4 1.6.5 2.8 2.1 2.8 3.8 0 2.4-1.9 4.3-4.3 4.3H4V2z" fill="currentColor"/>
+                </svg>
+              </button>
+              
+              <button @click="execCommand('italic')" title="Курсив">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M6 2h6M4 14h6M9 2L7 14" stroke="currentColor" fill="none" stroke-width="1.5"/>
+                </svg>
+              </button>
+              
+              <button @click="execCommand('underline')" title="Подчеркивание">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M4 3v4c0 2.2 1.8 4 4 4s4-1.8 4-4V3M2 14h12" stroke="currentColor" fill="none" stroke-width="1.5"/>
+                </svg>
+              </button>
+              
+              <button @click="execCommand('strikeThrough')" title="Зачеркивание">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M12.5 3c-.7-1.2-2.2-2-4.5-2s-3.8.8-4.5 2M1 8h14M12.5 13c-.7 1.2-2.2 2-4.5 2s-3.8-.8-4.5-2" stroke="currentColor" fill="none" stroke-width="1.5"/>
+                </svg>
+              </button>
+              
+              <span class="separator">|</span>
+              
+              <button @click="execCommand('insertUnorderedList')" title="Маркированный список">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <circle cx="3" cy="4" r="1" fill="currentColor"/>
+                  <circle cx="3" cy="8" r="1" fill="currentColor"/>
+                  <circle cx="3" cy="12" r="1" fill="currentColor"/>
+                  <path d="M7 4h8M7 8h8M7 12h8" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+              </button>
+              
+              <button @click="execCommand('insertOrderedList')" title="Нумерованный список">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <text x="2" y="6" font-size="8" fill="currentColor">1</text>
+                  <text x="2" y="10" font-size="8" fill="currentColor">2</text>
+                  <text x="2" y="14" font-size="8" fill="currentColor">3</text>
+                  <path d="M7 4h8M7 8h8M7 12h8" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+              </button>
+              
+              <button @click="execCommand('outdent')" title="Убрать отступ">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M2 4h12M8 8h6M8 12h6M2 8l3 2-3 2z" stroke="currentColor" fill="currentColor" stroke-width="1.5"/>
+                </svg>
+              </button>
+              
+              <button @click="execCommand('indent')" title="Добавить отступ">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M2 4h12M8 8h6M8 12h6M2 12l3-2-3-2z" stroke="currentColor" fill="currentColor" stroke-width="1.5"/>
+                </svg>
+              </button>
+              
+              <span class="separator">|</span>
+              
+              <button @click="insertLink" title="Ссылка">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M6.5 10.5L9.5 7.5M7 5.5L5.5 4C4.7 3.2 3.3 3.2 2.5 4S1.8 6.3 2.5 7l1.5 1.5M9 10.5l1.5 1.5c.8.8 2.2.8 3 0s.8-2.2 0-3L12 7.5" stroke="currentColor" fill="none" stroke-width="1.5"/>
+                </svg>
+              </button>
+              
+              <button @click="execCommand('justifyLeft')" title="По левому краю">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M2 4h12M2 6h8M2 8h12M2 10h8M2 12h12" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+              </button>
+              
+              <button @click="execCommand('justifyCenter')" title="По центру">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M2 4h12M4 6h8M2 8h12M4 10h8M2 12h12" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+              </button>
+              
+              <button @click="execCommand('justifyRight')" title="По правому краю">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M2 4h12M6 6h8M2 8h12M6 10h8M2 12h12" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+              </button>
+              
+              <button @click="execCommand('removeFormat')" title="Убрать форматирование">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M4 4h8M8 4v8M6 12h4" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M2 2l12 12" stroke="red" stroke-width="2"/>
+                </svg>
+              </button>
+              
+              <span class="separator">|</span>
+              
+              <button @click="closeRichEditor" title="Закрыть">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M4 6l4 4 4-4" stroke="currentColor" fill="none" stroke-width="2"/>
+                </svg>
+              </button>
+            </div>
             <div
               ref="richEditor"
               contenteditable="true"
               class="rich-editor"
               @input="updateContent"
             ></div>
+            <div v-if="errors.about" class="error-message field-error">
+              {{ errors.about }}
+            </div>
           </div>
         </div>
       </div>
@@ -268,6 +283,7 @@
             </div>
           </div>
         </div>
+        
         <div class="data-row">
           <div class="data-label">Фамилия</div>
           <div class="input-wrapper">
@@ -281,16 +297,21 @@
             <div v-if="errors.lastName" class="error-message">{{ errors.lastName }}</div>
           </div>
         </div>
+        
         <div class="data-row">
           <div class="data-label">Отчество</div>
           <div class="input-wrapper">
             <input
               v-model="formData.middleName"
               class="data-input"
+              :class="{ error: errors.middleName }"
               placeholder="Ваше отчество"
+              @blur="validateField('middleName')"
             />
+            <div v-if="errors.middleName" class="error-message">{{ errors.middleName }}</div>
           </div>
         </div>
+        
         <div class="data-row">
           <div class="data-label">Телефон</div>
           <div class="input-wrapper">
@@ -306,10 +327,11 @@
             <div v-if="errors.phone" class="error-message">{{ errors.phone }}</div>
           </div>
         </div>
+        
         <div class="data-row">
           <div class="data-label">Страна</div>
           <div class="input-wrapper">
-            <div class="select-wrapper">
+            <div class="select-wrapper" :class="{ error: errors.country }">
               <select
                 v-model="formData.country"
                 class="data-select"
@@ -327,10 +349,11 @@
             <div v-if="errors.country" class="error-message">{{ errors.country }}</div>
           </div>
         </div>
+        
         <div class="data-row">
           <div class="data-label">Город</div>
           <div class="input-wrapper">
-            <div class="select-wrapper">
+            <div class="select-wrapper" :class="{ error: errors.city }">
               <select
                 v-model="formData.city"
                 class="data-select"
@@ -351,6 +374,7 @@
             <div v-if="errors.city" class="error-message">{{ errors.city }}</div>
           </div>
         </div>
+        
         <div class="data-row">
           <div class="data-label">Индекс</div>
           <div class="input-wrapper">
@@ -368,6 +392,7 @@
             </div>
           </div>
         </div>
+        
         <div class="data-row">
           <div class="data-label">
             Адрес <br />
@@ -396,8 +421,13 @@
         <div class="info-row">
           <div class="info-label">Валюта</div>
           <div class="input-wrapper">
-            <div class="select-wrapper">
-              <select v-model="formData.currency" class="data-select">
+            <div class="select-wrapper" :class="{ error: errors.currency }">
+              <select 
+                v-model="formData.currency" 
+                class="data-select"
+                :class="{ error: errors.currency }"
+                @blur="validateField('currency')"
+              >
                 <option value="" disabled>Выберите валюту</option>
                 <option value="USD">USD - Доллар США</option>
                 <option value="EUR">EUR - Евро</option>
@@ -405,6 +435,7 @@
                 <option value="KZT">KZT - Казахстанский тенге</option>
               </select>
             </div>
+            <div v-if="errors.currency" class="error-message">{{ errors.currency }}</div>
           </div>
         </div>
 
@@ -430,7 +461,7 @@
               Вы можете <br />
               привязать аккаунты:
             </div>
-            <div class="accounts-icons">
+            <div class="accounts-icons" :class="{ error: errors.socialNetworks }">
               <img
                 v-for="social in socialNetworks"
                 :key="social.name"
@@ -441,6 +472,7 @@
                 @click="toggleSocialNetwork(social.name)"
               />
             </div>
+            <div v-if="errors.socialNetworks" class="error-message">{{ errors.socialNetworks }}</div>
           </div>
         </div>
       </div>
@@ -469,13 +501,18 @@
       </div>
 
       <div class="modal-body">
-        <input
-          v-model="socialCredentials[currentSocial]"
-          type="text"
-          :placeholder="getSocialPlaceholder(currentSocial)"
-          class="social-input"
-          @keyup.enter="saveSocialConnection"
-        />
+        <div class="input-wrapper">
+          <input
+            v-model="socialCredentials[currentSocial]"
+            type="text"
+            :placeholder="getSocialPlaceholder(currentSocial)"
+            class="social-input"
+            :class="{ error: errors.socialInput }"
+            @keyup.enter="saveSocialConnection"
+            @blur="validateSocialInput"
+          />
+          <div v-if="errors.socialInput" class="error-message">{{ errors.socialInput }}</div>
+        </div>
 
         <button class="modal-btn save-btn" @click="saveSocialConnection">
           Сохранить
@@ -491,9 +528,7 @@ export default {
   data() {
     return {
       showRichEditor: false,
-
       showUploadTips: false,
-
       showSocialModal: false,
       currentSocial: null,
       socialCredentials: {
@@ -505,12 +540,10 @@ export default {
         website: "",
       },
 
-      // Основные данные
       coverImageUrl: null,
       avatarImageUrl: null,
       isSaving: false,
 
-      // Данные формы
       formData: {
         about: "",
         firstName: "",
@@ -525,10 +558,8 @@ export default {
         bankCard: "",
       },
 
-      // Ошибки валидации
       errors: {},
 
-      // Социальные сети
       socialNetworks: [
         { name: "telegram", icon: "/images/telegramm.png", connected: false },
         { name: "facebook", icon: "/images/facebook.png", connected: false },
@@ -538,7 +569,6 @@ export default {
         { name: "website", icon: "/images/internet.png", connected: false },
       ],
 
-      // Города по странам
       citiesData: {
         russia: [
           { value: "moscow", label: "Москва" },
@@ -591,17 +621,31 @@ export default {
   },
 
   methods: {
+    setFieldError(fieldName, message) {
+      this.$set(this.errors, fieldName, message);
+    },
+
+    clearFieldError(fieldName) {
+      this.$delete(this.errors, fieldName);
+    },
+
+    clearAllErrors() {
+      this.errors = {};
+    },
+
+    setMultipleErrors(errorsObject) {
+      Object.keys(errorsObject).forEach(field => {
+        this.$set(this.errors, field, errorsObject[field]);
+      });
+    },
+
     openRichEditor() {
       this.showRichEditor = true;
       this.$nextTick(() => {
         const editor = this.$refs.richEditor;
-
-        // Устанавливаем содержимое ОДИН РАЗ
         editor.innerHTML = this.formData.about || "";
-
         editor.focus();
 
-        // Ставим курсор в конец
         const range = document.createRange();
         const selection = window.getSelection();
 
@@ -623,14 +667,13 @@ export default {
     },
 
     updateContent() {
-      // Сохраняем только текстовое содержимое
       this.formData.about = this.$refs.richEditor.innerText;
     },
 
     closeRichEditor() {
       this.showRichEditor = false;
     },
-    // В methods добавить:
+
     execCommand(command, value = null) {
       document.execCommand(command, false, value);
       this.$refs.richEditor.focus();
@@ -643,11 +686,6 @@ export default {
       }
     },
 
-    updateContent() {
-      this.formData.about = this.$refs.richEditor.innerHTML;
-    },
-
-    // после рич эдитора
     toggleUploadTips() {
       this.showUploadTips = !this.showUploadTips;
     },
@@ -655,23 +693,37 @@ export default {
     openSocialModal(socialName) {
       this.currentSocial = socialName;
       this.showSocialModal = true;
+      this.clearFieldError('socialInput');
     },
 
     closeSocialModal() {
       this.showSocialModal = false;
       this.currentSocial = null;
+      this.clearFieldError('socialInput');
     },
 
     saveSocialConnection() {
       const credential = this.socialCredentials[this.currentSocial];
-      if (credential.trim()) {
-        const network = this.socialNetworks.find((n) => n.name === this.currentSocial);
-        if (network) {
-          network.connected = true;
-          console.log(`${this.currentSocial} подключен: ${credential}`);
-        }
+      if (!credential.trim()) {
+        this.setFieldError('socialInput', 'Поле не может быть пустым');
+        return;
+      }
+      
+      const network = this.socialNetworks.find((n) => n.name === this.currentSocial);
+      if (network) {
+        network.connected = true;
+        console.log(`${this.currentSocial} подключен: ${credential}`);
       }
       this.closeSocialModal();
+    },
+
+    validateSocialInput() {
+      const credential = this.socialCredentials[this.currentSocial];
+      if (!credential.trim()) {
+        this.setFieldError('socialInput', 'Поле не может быть пустым');
+      } else {
+        this.clearFieldError('socialInput');
+      }
     },
 
     getSocialTitle(socialName) {
@@ -701,14 +753,15 @@ export default {
     removeAvatar() {
       this.avatarImageUrl = null;
       this.$refs.avatarInput.value = "";
+      this.clearFieldError('avatarImage');
     },
 
     removeCover() {
       this.coverImageUrl = null;
       this.$refs.coverInput.value = "";
+      this.clearFieldError('coverImage');
     },
 
-    // === ЗАГРУЗКА ИЗОБРАЖЕНИЙ ===
     triggerCoverUpload() {
       this.$refs.coverInput.click();
     },
@@ -746,15 +799,15 @@ export default {
     },
 
     processImage(file, type) {
-      // Проверка типа файла
       if (!file.type.startsWith("image/")) {
-        alert("Пожалуйста, выберите изображение");
+        const errorField = type === "cover" ? "coverImage" : "avatarImage";
+        this.setFieldError(errorField, "Пожалуйста, выберите изображение");
         return;
       }
 
-      // Проверка размера файла (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert("Размер файла не должен превышать 5MB");
+        const errorField = type === "cover" ? "coverImage" : "avatarImage";
+        this.setFieldError(errorField, "Размер файла не должен превышать 5MB");
         return;
       }
 
@@ -762,28 +815,12 @@ export default {
       reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-          // Проверка разрешения
-          // if (type === "avatar" && (img.width < 500 || img.height < 500)) {
-          //   if (
-          //     !confirm(
-          //       "Рекомендуемое разрешение для аватара не менее 500x500. Продолжить?"
-          //     )
-          //   ) {
-          //     return;
-          //   }
-          // }
-
-          // if (type === "cover" && (img.width < 1920 || img.height < 400)) {
-          //   if (!confirm("Рекомендуемое разрешение для обложки 1920x400. Продолжить?")) {
-          //     return;
-          //   }
-          // }
-
-          // Сохранение изображения
           if (type === "cover") {
             this.coverImageUrl = e.target.result;
+            this.clearFieldError('coverImage');
           } else {
             this.avatarImageUrl = e.target.result;
+            this.clearFieldError('avatarImage');
           }
         };
         img.src = e.target.result;
@@ -791,98 +828,111 @@ export default {
       reader.readAsDataURL(file);
     },
 
-    // === ВАЛИДАЦИЯ ===
     validateField(fieldName) {
-      this.$delete(this.errors, fieldName);
+      this.clearFieldError(fieldName);
 
-      const value = this.formData[fieldName]?.trim();
+      const value = this.formData[fieldName];
 
       switch (fieldName) {
         case "firstName":
         case "lastName":
-          if (!value) {
-            this.$set(this.errors, fieldName, "Это поле обязательно");
-          } else if (value.length < 2) {
-            this.$set(this.errors, fieldName, "Минимум 2 символа");
-          } else if (!/^[а-яёА-ЯЁa-zA-Z\s-]+$/.test(value)) {
-            this.$set(this.errors, fieldName, "Только буквы, пробелы и дефисы");
+          if (!value || !value.trim()) {
+            this.setFieldError(fieldName, "Это поле обязательно");
+          } else if (value.trim().length < 2) {
+            this.setFieldError(fieldName, "Минимум 2 символа");
+          } else if (!/^[а-яёА-ЯЁa-zA-Z\s-]+$/.test(value.trim())) {
+            this.setFieldError(fieldName, "Только буквы, пробелы и дефисы");
+          }
+          break;
+
+        case "middleName":
+          if (value && value.trim() && !/^[а-яёА-ЯЁa-zA-Z\s-]+$/.test(value.trim())) {
+            this.setFieldError(fieldName, "Только буквы, пробелы и дефисы");
           }
           break;
 
         case "phone":
-          if (!value) {
-            this.$set(this.errors, fieldName, "Номер телефона обязателен");
+          if (!value || !value.trim()) {
+            this.setFieldError(fieldName, "Номер телефона обязателен");
           } else {
-            // Проверяем базовые правила
             const hasDigits = /\d/.test(value);
             const spaceCount = (value.match(/\s/g) || []).length;
             const openBrackets = (value.match(/\(/g) || []).length;
             const closeBrackets = (value.match(/\)/g) || []).length;
 
             if (!hasDigits) {
-              this.$set(this.errors, fieldName, "Номер должен содержать цифры");
+              this.setFieldError(fieldName, "Номер должен содержать цифры");
             } else if (spaceCount > 1) {
-              this.$set(this.errors, fieldName, "Максимум один пробел");
+              this.setFieldError(fieldName, "Максимум один пробел");
             } else if (openBrackets !== closeBrackets || openBrackets > 1) {
-              this.$set(
-                this.errors,
-                fieldName,
-                "Скобки должны быть парными и не более одной пары"
-              );
+              this.setFieldError(fieldName, "Скобки должны быть парными и не более одной пары");
             } else if (value.length < 5) {
-              this.$set(this.errors, fieldName, "Номер слишком короткий");
+              this.setFieldError(fieldName, "Номер слишком короткий");
             }
           }
           break;
 
         case "country":
           if (!value) {
-            this.$set(this.errors, fieldName, "Выберите страну");
+            this.setFieldError(fieldName, "Выберите страну");
           }
           break;
 
         case "city":
           if (!value) {
-            this.$set(this.errors, fieldName, "Выберите город");
+            this.setFieldError(fieldName, "Выберите город");
           }
           break;
 
         case "postalCode":
-          if (!value) {
-            this.$set(this.errors, fieldName, "Индекс обязателен");
+          if (!value || !value.trim()) {
+            this.setFieldError(fieldName, "Индекс обязателен");
           } else if (!/^\d{6}$/.test(value)) {
-            this.$set(this.errors, fieldName, "Индекс должен содержать 6 цифр");
+            this.setFieldError(fieldName, "Индекс должен содержать 6 цифр");
           }
           break;
 
         case "address":
-          if (!value) {
-            this.$set(this.errors, fieldName, "Адрес обязателен");
-          } else if (value.length < 10) {
-            this.$set(this.errors, fieldName, "Адрес слишком короткий");
+          if (!value || !value.trim()) {
+            this.setFieldError(fieldName, "Адрес обязателен");
+          } else if (value.trim().length < 10) {
+            this.setFieldError(fieldName, "Адрес слишком короткий");
           }
           break;
 
         case "bankCard":
           if (value && !/^\d{4} \d{4} \d{4} \d{4}$/.test(value)) {
-            this.$set(this.errors, fieldName, "Некорректный формат карты");
+            this.setFieldError(fieldName, "Некорректный формат карты");
+          }
+          break;
+
+        case "currency":
+          if (!value) {
+            this.setFieldError(fieldName, "Выберите валюту");
+          }
+          break;
+
+        case "about":
+          if (value && value.trim().length > 1000) {
+            this.setFieldError(fieldName, "Максимум 1000 символов");
+          }
+          break;
+
+        case "socialNetworks":
+          const connectedCount = this.socialNetworks.filter(n => n.connected).length;
+          if (connectedCount === 0) {
+            this.setFieldError(fieldName, "Подключите хотя бы одну социальную сеть");
           }
           break;
       }
     },
 
-    // === ФОРМАТИРОВАНИЕ ===
     formatPhone() {
       let value = this.formData.phone;
-
-      // Удаляем все кроме цифр, пробелов, плюса и скобок
       value = value.replace(/[^\d\s+()]/g, "");
-
-      // Ограничиваем длину
       if (value.length > 20) {
         value = value.slice(0, 20);
       }
-
       this.formData.phone = value;
     },
 
@@ -897,10 +947,9 @@ export default {
       this.formData.postalCode = this.formData.postalCode.replace(/\D/g, "").slice(0, 6);
     },
 
-    // === ОБРАБОТЧИКИ СОБЫТИЙ ===
     onCountryChange() {
       this.formData.city = "";
-      this.$delete(this.errors, "city");
+      this.clearFieldError("city");
       this.validateField("country");
     },
 
@@ -908,19 +957,15 @@ export default {
       const network = this.socialNetworks.find((n) => n.name === networkName);
       if (network) {
         if (network.connected) {
-          // Отключаем
           network.connected = false;
           this.socialCredentials[networkName] = "";
         } else {
-          // Открываем модалку для подключения
           this.openSocialModal(networkName);
         }
       }
     },
 
-    // === СОХРАНЕНИЕ ===
     async saveProfile() {
-      // Валидация всей формы
       const fieldsToValidate = [
         "firstName",
         "lastName",
@@ -932,7 +977,6 @@ export default {
       ];
       fieldsToValidate.forEach((field) => this.validateField(field));
 
-      // Валидация банковской карты если заполнена
       if (this.formData.bankCard) {
         this.validateField("bankCard");
       }
@@ -945,7 +989,6 @@ export default {
       this.isSaving = true;
 
       try {
-        // Подготовка данных для отправки
         const profileData = {
           ...this.formData,
           coverImage: this.coverImageUrl,
@@ -957,11 +1000,7 @@ export default {
 
         console.log("Данные для сохранения:", profileData);
 
-        // Имитация запроса к API
         await new Promise((resolve) => setTimeout(resolve, 1500));
-
-        // Здесь будет реальный запрос к API
-        // const response = await api.saveProfile(profileData);
 
         alert("Профиль успешно сохранен!");
       } catch (error) {
