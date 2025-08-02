@@ -1,6 +1,6 @@
 <!-- src/components/Header.vue -->
 <template>
-  <header class="header">
+  <header class="header header--user">
     <div class="header-top">
       <div class="container">
         <div class="header-top__inner">
@@ -48,13 +48,115 @@
           </div>
           <div class="header-top__right">
             <div class="header__language custom_select">
-              <select @focus="toggleSelect" @blur="closeSelect">
+              <select>
                 <option value="">RU</option>
                 <option value="">ENG</option>
               </select>
             </div>
-            <a href="registration2.html" class="header__registration">Регистрация</a>
-            <a href="registration.html" class="header__user">Вход</a>
+            <div class="user">
+              <div class="user__show">
+                <div class="user__img">
+                  <img src="/images/user-icon5.svg" alt="" />
+                </div>
+                <div class="user__name">Иван И</div>
+              </div>
+              <div class="user__hidden">
+                <div class="user__top">
+                  <div class="user__close">
+                    <img src="/images/close3.svg" alt="" />
+                  </div>
+                  <div class="user__subgroup">
+                    <div class="user__img">
+                      <img src="/images/user-icon5.svg" alt="" />
+                    </div>
+                    <div class="user__name">Иван И</div>
+                  </div>
+                </div>
+                <div class="user__group">
+                  <div class="user__tariff">
+                    <div class="user__tariff-title">Тариф:</div>
+                    <div class="user__tariff-text">Бесплатный</div>
+                  </div>
+                  <button class="user__btn btn">
+                    <span>Оплатить магазин</span>
+                  </button>
+                </div>
+                <ul class="user__list">
+                  <li><a href="">Мой профиль</a></li>
+                  <li><a href="">Загрузить работу</a></li>
+                  <li><a href="">Мои работы</a></li>
+                  <li><a href="">Мои коллекции</a></li>
+                  <li><a href="">Мои новости</a></li>
+                  <li><a href="">Сообщения</a></li>
+                  <li><a href="">Заказы и доставка</a></li>
+                  <li class="header__catalog-item2">
+                    <div class="item-show">
+                      <span>Настройки</span>
+                      <i>
+                        <svg
+                          width="11"
+                          height="6"
+                          viewBox="0 0 11 6"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M1 1L5.5 5L10 1"
+                            stroke="#9F9F9F"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </i>
+                    </div>
+                    <div class="item-hidden">
+                      <ul class="header__catalog-list">
+                        <li><a href="">Настройки</a></li>
+                        <li><a href="">Настройки</a></li>
+                        <li><a href="">Настройки</a></li>
+                        <li><a href="">Настройки</a></li>
+                        <li><a href="">Настройки</a></li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+                <a class="user__exit" href="">
+                  <i>
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 15 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M9.66663 1.00012L12.5555 1.00012C12.9386 1.00012 13.306 1.1523 13.5769 1.42319C13.8478 1.69408 14 2.06148 14 2.44457L14 12.5557C14 12.9388 13.8478 13.3062 13.5769 13.5771C13.306 13.8479 12.9386 14.0001 12.5555 14.0001L9.66663 14.0001"
+                        stroke="#9F9F9F"
+                        stroke-width="1.44444"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M6.05554 11.1112L9.66665 7.50013L6.05554 3.88901"
+                        stroke="#9F9F9F"
+                        stroke-width="1.44444"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M9.66667 7.50012L1 7.50012"
+                        stroke="#9F9F9F"
+                        stroke-width="1.44444"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </i>
+                  <span>Выйти</span>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1430,6 +1532,110 @@
                   </span>
                   <span class="header__basket-text">Корзина</span>
                 </a>
+              </div>
+              <div class="user">
+                <div class="user__show">
+                  <div class="user__img">
+                    <img src="/images/user-icon5.svg" alt="" />
+                  </div>
+                  <div class="user__name">Иван И</div>
+                </div>
+                <div class="user__hidden">
+                  <div class="user__top">
+                    <div class="user__close">
+                      <img src="/images/close3.svg" alt="" />
+                    </div>
+                    <div class="user__subgroup">
+                      <div class="user__img">
+                        <img src="/images/user-icon5.svg" alt="" />
+                      </div>
+                      <div class="user__name">Иван И</div>
+                    </div>
+                  </div>
+                  <div class="user__group">
+                    <div class="user__tariff">
+                      <div class="user__tariff-title">Тариф:</div>
+                      <div class="user__tariff-text">Бесплатный</div>
+                    </div>
+                    <button class="user__btn btn">
+                      <span>Оплатить магазин</span>
+                    </button>
+                  </div>
+                  <ul class="user__list">
+                    <li><a href="">Мой профиль</a></li>
+                    <li><a href="">Загрузить работу</a></li>
+                    <li><a href="">Мои работы</a></li>
+                    <li><a href="">Мои коллекции</a></li>
+                    <li><a href="">Мои новости</a></li>
+                    <li><a href="">Сообщения</a></li>
+                    <li><a href="">Заказы и доставка</a></li>
+                    <li class="header__catalog-item2">
+                      <div class="item-show">
+                        <span>Настройки</span>
+                        <i>
+                          <svg
+                            width="11"
+                            height="6"
+                            viewBox="0 0 11 6"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M1 1L5.5 5L10 1"
+                              stroke="#9F9F9F"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </i>
+                      </div>
+                      <div class="item-hidden">
+                        <ul class="header__catalog-list">
+                          <li><a href="">Настройки</a></li>
+                          <li><a href="">Настройки</a></li>
+                          <li><a href="">Настройки</a></li>
+                          <li><a href="">Настройки</a></li>
+                          <li><a href="">Настройки</a></li>
+                        </ul>
+                      </div>
+                    </li>
+                  </ul>
+                  <a class="user__exit" href="">
+                    <i>
+                      <svg
+                        width="15"
+                        height="15"
+                        viewBox="0 0 15 15"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9.66663 1.00012L12.5555 1.00012C12.9386 1.00012 13.306 1.1523 13.5769 1.42319C13.8478 1.69408 14 2.06148 14 2.44457L14 12.5557C14 12.9388 13.8478 13.3062 13.5769 13.5771C13.306 13.8479 12.9386 14.0001 12.5555 14.0001L9.66663 14.0001"
+                          stroke="#9F9F9F"
+                          stroke-width="1.44444"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M6.05554 11.1112L9.66665 7.50013L6.05554 3.88901"
+                          stroke="#9F9F9F"
+                          stroke-width="1.44444"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M9.66667 7.50012L1 7.50012"
+                          stroke="#9F9F9F"
+                          stroke-width="1.44444"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </i>
+                    <span>Выйти</span>
+                  </a>
+                </div>
               </div>
               <div class="burger">
                 <img src="/images/burger-icon.svg" alt="" />
