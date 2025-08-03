@@ -123,214 +123,20 @@
         </ol>
       </div>
 
-      <!-- О магазине -->
+      <!-- Заменить секцию О магазине на: -->
       <div class="about-section">
         <h3>О магазине:</h3>
         <div class="about-content">
-          <!-- Простая textarea -->
-          <div class="field-wrapper">
-            <textarea
-              v-if="!showRichEditor"
-              v-model="formData.about"
-              placeholder="Расскажите о своем магазине..."
-              class="about-textarea"
-              :class="{ error: errors.about }"
-              @focus="openRichEditor"
-            ></textarea>
-            <div v-if="errors.about && !showRichEditor" class="error-message field-error">
-              {{ errors.about }}
+          <div class="quill-wrapper" :class="{ error: errors.about }">
+            <QuillEditor
+              v-model:content="formData.about"
+              :options="editorOptions"
+              @update:content="onEditorChange"
+              contentType="html"
+            />
+            <div class="char-counter">
+              {{ getTextLength() }}
             </div>
-          </div>
-
-          <!-- Rich editor -->
-          <div
-            v-if="showRichEditor"
-            class="rich-editor-wrapper"
-            :class="{ error: errors.about }"
-          >
-            <div class="editor-toolbar">
-              <button @click="execCommand('insertHTML', '<>')" title="Код">
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path
-                    d="M4.5 3L1 8l3.5 5M11.5 3L15 8l-3.5 5"
-                    stroke="currentColor"
-                    fill="none"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </button>
-
-              <button @click="execCommand('bold')" title="Жирный">
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path
-                    d="M4 2h4c2.2 0 4 1.8 4 4 0 1.5-.8 2.8-2 3.4 1.6.5 2.8 2.1 2.8 3.8 0 2.4-1.9 4.3-4.3 4.3H4V2z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </button>
-
-              <button @click="execCommand('italic')" title="Курсив">
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path
-                    d="M6 2h6M4 14h6M9 2L7 14"
-                    stroke="currentColor"
-                    fill="none"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </button>
-
-              <button @click="execCommand('underline')" title="Подчеркивание">
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path
-                    d="M4 3v4c0 2.2 1.8 4 4 4s4-1.8 4-4V3M2 14h12"
-                    stroke="currentColor"
-                    fill="none"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </button>
-
-              <button @click="execCommand('strikeThrough')" title="Зачеркивание">
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path
-                    d="M12.5 3c-.7-1.2-2.2-2-4.5-2s-3.8.8-4.5 2M1 8h14M12.5 13c-.7 1.2-2.2 2-4.5 2s-3.8-.8-4.5-2"
-                    stroke="currentColor"
-                    fill="none"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </button>
-
-              <span class="separator">|</span>
-
-              <button
-                @click="execCommand('insertUnorderedList')"
-                title="Маркированный список"
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <circle cx="3" cy="4" r="1" fill="currentColor" />
-                  <circle cx="3" cy="8" r="1" fill="currentColor" />
-                  <circle cx="3" cy="12" r="1" fill="currentColor" />
-                  <path
-                    d="M7 4h8M7 8h8M7 12h8"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </button>
-
-              <button
-                @click="execCommand('insertOrderedList')"
-                title="Нумерованный список"
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <text x="2" y="6" font-size="8" fill="currentColor">1</text>
-                  <text x="2" y="10" font-size="8" fill="currentColor">2</text>
-                  <text x="2" y="14" font-size="8" fill="currentColor">3</text>
-                  <path
-                    d="M7 4h8M7 8h8M7 12h8"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </button>
-
-              <button @click="execCommand('outdent')" title="Убрать отступ">
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path
-                    d="M2 4h12M8 8h6M8 12h6M2 8l3 2-3 2z"
-                    stroke="currentColor"
-                    fill="currentColor"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </button>
-
-              <button @click="execCommand('indent')" title="Добавить отступ">
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path
-                    d="M2 4h12M8 8h6M8 12h6M2 12l3-2-3-2z"
-                    stroke="currentColor"
-                    fill="currentColor"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </button>
-
-              <span class="separator">|</span>
-
-              <button @click="insertLink" title="Ссылка">
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path
-                    d="M6.5 10.5L9.5 7.5M7 5.5L5.5 4C4.7 3.2 3.3 3.2 2.5 4S1.8 6.3 2.5 7l1.5 1.5M9 10.5l1.5 1.5c.8.8 2.2.8 3 0s.8-2.2 0-3L12 7.5"
-                    stroke="currentColor"
-                    fill="none"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </button>
-
-              <button @click="execCommand('justifyLeft')" title="По левому краю">
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path
-                    d="M2 4h12M2 6h8M2 8h12M2 10h8M2 12h12"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </button>
-
-              <button @click="execCommand('justifyCenter')" title="По центру">
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path
-                    d="M2 4h12M4 6h8M2 8h12M4 10h8M2 12h12"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </button>
-
-              <button @click="execCommand('justifyRight')" title="По правому краю">
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path
-                    d="M2 4h12M6 6h8M2 8h12M6 10h8M2 12h12"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </button>
-
-              <button @click="execCommand('removeFormat')" title="Убрать форматирование">
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path
-                    d="M4 4h8M8 4v8M6 12h4"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                  />
-                  <path d="M2 2l12 12" stroke="red" stroke-width="2" />
-                </svg>
-              </button>
-
-              <span class="separator">|</span>
-
-              <button @click="closeRichEditor" title="Закрыть">
-                <svg width="16" height="16" viewBox="0 0 16 16">
-                  <path
-                    d="M4 6l4 4 4-4"
-                    stroke="currentColor"
-                    fill="none"
-                    stroke-width="2"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div
-              ref="richEditor"
-              contenteditable="true"
-              class="rich-editor"
-              @input="updateContent"
-            ></div>
             <div v-if="errors.about" class="error-message field-error">
               {{ errors.about }}
             </div>
@@ -414,7 +220,7 @@
               <select
                 v-model="formData.country"
                 class="data-select"
-                :class="{ error: errors.country }"
+                :class="{ error: errors.country, 'has-value': formData.country }"
                 @change="onCountryChange"
                 @blur="validateField('country')"
               >
@@ -436,7 +242,7 @@
               <select
                 v-model="formData.city"
                 class="data-select"
-                :class="{ error: errors.city }"
+                :class="{ error: errors.city, 'has-value': formData.city }"
                 :disabled="!formData.country"
                 @blur="validateField('city')"
               >
@@ -461,10 +267,10 @@
               v-model="formData.postalCode"
               class="data-input"
               :class="{ error: errors.postalCode }"
-              placeholder="123456"
+              placeholder="123456 или A1B 2C3"
               @input="formatPostalCode"
               @blur="validateField('postalCode')"
-              maxlength="6"
+              maxlength="12"
             />
             <div v-if="errors.postalCode" class="error-message">
               {{ errors.postalCode }}
@@ -504,7 +310,7 @@
               <select
                 v-model="formData.currency"
                 class="data-select"
-                :class="{ error: errors.currency }"
+                :class="{ error: errors.currency, 'has-value': formData.currency }"
                 @blur="validateField('currency')"
               >
                 <option value="" disabled>Выберите валюту</option>
@@ -542,14 +348,14 @@
             </div>
             <div class="accounts-icons" :class="{ error: errors.socialNetworks }">
               <img
-  v-for="social in socialNetworks"
-  :key="social.name"
-  :src="getIconSrc(social)"
-  :alt="social.name"
-  class="account-icon"
-  :class="{ connected: social.connected }"
-  @click="toggleSocialNetwork(social.name)"
-/>
+                v-for="social in socialNetworks"
+                :key="social.name"
+                :src="getIconSrc(social)"
+                :alt="social.name"
+                class="account-icon"
+                :class="{ connected: social.connected }"
+                @click="toggleSocialNetwork(social.name)"
+              />
             </div>
             <div v-if="errors.socialNetworks" class="error-message">
               {{ errors.socialNetworks }}
@@ -562,11 +368,7 @@
 
   <section class="save-section">
     <div class="save-container">
-      <button
-        class="save-btn-bottom"
-        :disabled="isSaving"
-        @click="saveProfile"
-      >
+      <button class="save-btn-bottom" :disabled="isSaving" @click="saveProfile">
         <span v-if="isSaving">Сохранение...</span>
         <span v-else>Сохранить</span>
       </button>
@@ -597,19 +399,67 @@
           </div>
         </div>
 
-        <button class="modal-btn save-btn" @click="saveSocialConnection">
-          Сохранить
-        </button>
+        <div style="display: flex; gap: 10px">
+          <button
+            class="modal-btn save-btn"
+            @click="saveSocialConnection"
+            style="flex: 1"
+          >
+            Сохранить
+          </button>
+          <button
+            v-if="isCurrentSocialConnected"
+            class="modal-btn"
+            @click="disconnectSocial"
+            style="
+              flex: 1;
+              background: #e74c3c;
+              color: white;
+              border: none;
+              border-radius: 12px;
+              font-size: 16px;
+              font-weight: 600;
+              cursor: pointer;
+              transition: all 0.2s ease;
+              height: 56px;
+            "
+            @mouseover="$event.target.style.background = '#c0392b'"
+            @mouseout="$event.target.style.background = '#e74c3c'"
+          >
+            Удалить
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { QuillEditor } from "@vueup/vue-quill";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
+
 export default {
   name: "Profile",
+  components: {
+    QuillEditor,
+  },
   data() {
     return {
+      // Настройки Quill Editor для Vue 3
+      editorOptions: {
+        theme: "snow",
+        placeholder: "Расскажите о своем магазине...",
+        modules: {
+          toolbar: [
+            ["bold", "italic", "underline", "strike"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            [{ align: [] }],
+            ["link"],
+            ["clean"],
+          ],
+        },
+      },
+
       socialNetworks: [
         {
           name: "telegram",
@@ -649,7 +499,6 @@ export default {
         },
       ],
 
-      showRichEditor: false,
       showUploadTips: false,
       showSocialModal: false,
       currentSocial: null,
@@ -713,30 +562,48 @@ export default {
     availableCities() {
       return this.citiesData[this.formData.country] || [];
     },
+
+    isCurrentSocialConnected() {
+      if (!this.currentSocial) return false;
+      const network = this.socialNetworks.find((n) => n.name === this.currentSocial);
+      return network && network.connected;
+    },
   },
 
   methods: {
-getIconSrc(social) {
-  if (!social.connected) return social.icon;
-  
-  const colorIcons = {
-    'facebook': '/images/col-facebook.png',
-    'vk': '/images/col-vk.png', 
-    'instagram': '/images/col-instagramm.png',
-    'pinterest': '/images/col-pinterest.png',
-    'website': '/images/col-internet.png',
-    'telegram': '/images/col-telegramm.png'
-  };
-  
-  return colorIcons[social.name] || social.icon;
-},
-    
+    getIconSrc(social) {
+      if (!social.connected) return social.icon;
+
+      const colorIcons = {
+        facebook: "/images/col-facebook.png",
+        vk: "/images/col-vk.png",
+        instagram: "/images/col-instagramm.png",
+        pinterest: "/images/col-pinterest.png",
+        website: "/images/col-internet.png",
+        telegram: "/images/col-telegramm.png",
+      };
+
+      return colorIcons[social.name] || social.icon;
+    },
+
+    // Методы для Quill Editor
+    onEditorChange() {
+      this.validateField("about");
+    },
+
+    getTextLength() {
+      if (!this.formData.about) return 0;
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = this.formData.about;
+      return tempDiv.textContent.trim().length;
+    },
+
     setFieldError(fieldName, message) {
-      this.$set(this.errors, fieldName, message);
+      this.errors[fieldName] = message;
     },
 
     clearFieldError(fieldName) {
-      this.$delete(this.errors, fieldName);
+      delete this.errors[fieldName];
     },
 
     clearAllErrors() {
@@ -745,55 +612,8 @@ getIconSrc(social) {
 
     setMultipleErrors(errorsObject) {
       Object.keys(errorsObject).forEach((field) => {
-        this.$set(this.errors, field, errorsObject[field]);
+        this.errors[field] = errorsObject[field];
       });
-    },
-
-    openRichEditor() {
-      this.showRichEditor = true;
-      this.$nextTick(() => {
-        const editor = this.$refs.richEditor;
-        editor.innerHTML = this.formData.about || "";
-        editor.focus();
-
-        const range = document.createRange();
-        const selection = window.getSelection();
-
-        if (editor.childNodes.length > 0) {
-          const lastNode = editor.childNodes[editor.childNodes.length - 1];
-          if (lastNode.nodeType === Node.TEXT_NODE) {
-            range.setStart(lastNode, lastNode.textContent.length);
-          } else {
-            range.setStartAfter(lastNode);
-          }
-        } else {
-          range.setStart(editor, 0);
-        }
-
-        range.collapse(true);
-        selection.removeAllRanges();
-        selection.addRange(range);
-      });
-    },
-
-    updateContent() {
-      this.formData.about = this.$refs.richEditor.innerText;
-    },
-
-    closeRichEditor() {
-      this.showRichEditor = false;
-    },
-
-    execCommand(command, value = null) {
-      document.execCommand(command, false, value);
-      this.$refs.richEditor.focus();
-    },
-
-    insertLink() {
-      const url = prompt("Введите URL:");
-      if (url) {
-        this.execCommand("createLink", url);
-      }
     },
 
     toggleUploadTips() {
@@ -804,12 +624,33 @@ getIconSrc(social) {
       this.currentSocial = socialName;
       this.showSocialModal = true;
       this.clearFieldError("socialInput");
+
+      const network = this.socialNetworks.find((n) => n.name === socialName);
+      if (network && network.connected && this.socialCredentials[socialName]) {
+        this.$nextTick(() => {
+          const input = document.querySelector(".social-input");
+          if (input) {
+            input.value = this.socialCredentials[socialName];
+            this.socialCredentials[socialName] = this.socialCredentials[socialName];
+          }
+        });
+      }
     },
 
     closeSocialModal() {
       this.showSocialModal = false;
       this.currentSocial = null;
       this.clearFieldError("socialInput");
+    },
+
+    disconnectSocial() {
+      const network = this.socialNetworks.find((n) => n.name === this.currentSocial);
+      if (network) {
+        network.connected = false;
+        this.socialCredentials[this.currentSocial] = "";
+        console.log(`${this.currentSocial} отключен`);
+      }
+      this.closeSocialModal();
     },
 
     saveSocialConnection() {
@@ -1001,8 +842,10 @@ getIconSrc(social) {
         case "postalCode":
           if (!value || !value.trim()) {
             this.setFieldError(fieldName, "Индекс обязателен");
-          } else if (!/^\d{6}$/.test(value)) {
-            this.setFieldError(fieldName, "Индекс должен содержать 6 цифр");
+          } else if (value.trim().length < 3) {
+            this.setFieldError(fieldName, "Индекс слишком короткий");
+          } else if (value.trim().length > 12) {
+            this.setFieldError(fieldName, "Индекс слишком длинный");
           }
           break;
 
@@ -1027,9 +870,7 @@ getIconSrc(social) {
           break;
 
         case "about":
-          if (value && value.trim().length > 1000) {
-            this.setFieldError(fieldName, "Максимум 1000 символов");
-          }
+          // Убрали лимит символов
           break;
 
         case "socialNetworks":
@@ -1058,7 +899,11 @@ getIconSrc(social) {
     },
 
     formatPostalCode() {
-      this.formData.postalCode = this.formData.postalCode.replace(/\D/g, "").slice(0, 6);
+      let value = this.formData.postalCode.replace(/[^a-zA-Zа-яёА-ЯЁ0-9\s-]/g, "");
+      if (value.length > 12) {
+        value = value.slice(0, 12);
+      }
+      this.formData.postalCode = value;
     },
 
     onCountryChange() {
@@ -1070,12 +915,7 @@ getIconSrc(social) {
     toggleSocialNetwork(networkName) {
       const networkIndex = this.socialNetworks.findIndex((n) => n.name === networkName);
       if (networkIndex !== -1) {
-        if (this.socialNetworks[networkIndex].connected) {
-          this.$set(this.socialNetworks[networkIndex], "connected", false);
-          this.socialCredentials[networkName] = "";
-        } else {
-          this.openSocialModal(networkName);
-        }
+        this.openSocialModal(networkName);
       }
     },
 
@@ -1109,3 +949,132 @@ getIconSrc(social) {
 </script>
 
 <style src="../assets/profile.css"></style>
+<style scoped>
+/* Черный цвет для выбранных значений в селектах */
+.data-select {
+  color: #9F9F9F;
+}
+
+.data-select.has-value {
+  color: #3F3F3F !important;
+}
+
+/* Стили для option */
+.data-select option {
+  color: #3F3F3F;
+}
+
+.data-select option:disabled {
+  color: #9F9F9F;
+}
+
+/* Стили для Quill Editor */
+.quill-wrapper {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.quill-wrapper.error {
+  border: 2px solid #e74c3c;
+}
+
+/* Кастомизация Quill Editor под ваш дизайн */
+.quill-wrapper :deep(.ql-toolbar) {
+  border: none;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f8f9fa;
+  padding: 10px 15px;
+}
+
+.quill-wrapper :deep(.ql-container) {
+  border: none;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 120px;
+  background: #F8F8FC;
+}
+
+.quill-wrapper :deep(.ql-editor) {
+  padding: 20px;
+  color: #3F3F3F;
+  min-height: 120px;
+}
+
+.quill-wrapper :deep(.ql-editor.ql-blank::before) {
+  color: #9F9F9F;
+  font-style: italic;
+}
+
+/* Стили кнопок тулбара */
+.quill-wrapper :deep(.ql-toolbar .ql-formats) {
+  margin-right: 15px;
+}
+
+.quill-wrapper :deep(.ql-toolbar button) {
+  padding: 8px;  /* увеличили с 6px */
+  margin: 2px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  background: transparent;
+  width: 36px;   /* фиксированная ширина */
+  height: 36px;  /* фиксированная высота */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quill-wrapper :deep(.ql-toolbar button:hover) {
+  background: #e9ecef;
+  transform: translateY(-1px);
+}
+
+/* НОВЫЕ СТИЛИ для активных кнопок - НЕ закрашиваем, а делаем обводку */
+.quill-wrapper :deep(.ql-toolbar button.ql-active) {
+  background: #f0f0ff !important;
+  border: 2px solid #5856D2 !important;
+  color: #5856D2 !important;
+  box-shadow: 0 2px 4px rgba(88, 86, 210, 0.2);
+}
+
+.quill-wrapper :deep(.ql-toolbar button.ql-active:hover) {
+  background: #e8e8ff !important;
+  transform: translateY(-1px);
+}
+
+/* Стили для dropdown'ов (выравнивание и т.д.) */
+.quill-wrapper :deep(.ql-toolbar .ql-picker) {
+  color: #3F3F3F;
+}
+
+.quill-wrapper :deep(.ql-toolbar .ql-picker-label) {
+  border: 2px solid transparent;
+  border-radius: 6px;
+  padding: 6px;
+  transition: all 0.2s ease;
+}
+
+.quill-wrapper :deep(.ql-toolbar .ql-picker-label:hover) {
+  background: #e9ecef;
+}
+
+.quill-wrapper :deep(.ql-toolbar .ql-picker.ql-expanded .ql-picker-label) {
+  background: #f0f0ff !important;
+  border: 2px solid #5856D2 !important;
+  color: #5856D2 !important;
+}
+
+/* Счетчик символов */
+.char-counter {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  font-size: 12px;
+  color: #9F9F9F;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2px 6px;
+  border-radius: 4px;
+  z-index: 10;
+}
+</style>
