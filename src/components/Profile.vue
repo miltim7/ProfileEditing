@@ -614,7 +614,7 @@ export default {
         {
           name: "telegram",
           icon: "/images/telegramm.png",
-          colorIcon: "/images/telegramm.png",
+          colorIcon: "/images/col-telegramm.png",
           connected: false,
         },
         {
@@ -725,7 +725,7 @@ getIconSrc(social) {
     'instagram': '/images/col-instagramm.png',
     'pinterest': '/images/col-pinterest.png',
     'website': '/images/col-internet.png',
-    'telegram': '/images/telegramm.png'
+    'telegram': '/images/col-telegramm.png'
   };
   
   return colorIcons[social.name] || social.icon;

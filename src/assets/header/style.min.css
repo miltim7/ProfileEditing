@@ -631,7 +631,10 @@ ul {
 	display: grid;
 	grid-template-columns: 100%;
 	gap: 5px;
-	margin-top: 10px
+	margin-top: 10px;
+	margin-left: 10px;
+	color: #3F3F3F;
+	font-weight: 100;
 }
 
 .header__catalog-list li a {
