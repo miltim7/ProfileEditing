@@ -1,4 +1,3 @@
-<!-- src/components/Profile.vue -->
 <template>
   <section class="breadcrumb-section">
     <div class="breadcrumb-container">
@@ -123,26 +122,12 @@
         </ol>
       </div>
 
-      <!-- Заменить секцию О магазине на: -->
-      <div class="about-section">
-        <h3>О магазине:</h3>
-        <div class="about-content">
-          <div class="quill-wrapper" :class="{ error: errors.about }">
-            <QuillEditor
-              v-model:content="formData.about"
-              :options="editorOptions"
-              @update:content="onEditorChange"
-              contentType="html"
-            />
-            <div class="char-counter">
-              {{ getTextLength() }}
-            </div>
-            <div v-if="errors.about" class="error-message field-error">
-              {{ errors.about }}
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Используем новый компонент AboutSection -->
+      <AboutSection 
+        v-model="formData.about" 
+        :about-error="errors.about"
+        @validate="handleAboutValidation"
+      />
     </div>
   </section>
 
@@ -435,31 +420,15 @@
 </template>
 
 <script>
-import { QuillEditor } from "@vueup/vue-quill";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import AboutSection from './AboutSection.vue';
 
 export default {
   name: "Profile",
   components: {
-    QuillEditor,
+    AboutSection,
   },
   data() {
     return {
-      // Настройки Quill Editor для Vue 3
-      editorOptions: {
-        theme: "snow",
-        placeholder: "Расскажите о своем магазине...",
-        modules: {
-          toolbar: [
-            ["bold", "italic", "underline", "strike"],
-            [{ list: "ordered" }, { list: "bullet" }],
-            [{ align: [] }],
-            ["link"],
-            ["clean"],
-          ],
-        },
-      },
-
       socialNetworks: [
         {
           name: "telegram",
@@ -516,7 +485,7 @@ export default {
       isSaving: false,
 
       formData: {
-        about: "",
+        about: "", // Оставляем для связи с компонентом AboutSection
         firstName: "",
         lastName: "",
         middleName: "",
@@ -571,6 +540,15 @@ export default {
   },
 
   methods: {
+    // Новый метод для обработки валидации от AboutSection
+    handleAboutValidation(validationResult) {
+      if (validationResult.isValid) {
+        this.clearFieldError('about');
+      } else {
+        this.setFieldError('about', validationResult.error);
+      }
+    },
+
     getIconSrc(social) {
       if (!social.connected) return social.icon;
 
@@ -584,18 +562,6 @@ export default {
       };
 
       return colorIcons[social.name] || social.icon;
-    },
-
-    // Методы для Quill Editor
-    onEditorChange() {
-      this.validateField("about");
-    },
-
-    getTextLength() {
-      if (!this.formData.about) return 0;
-      const tempDiv = document.createElement("div");
-      tempDiv.innerHTML = this.formData.about;
-      return tempDiv.textContent.trim().length;
     },
 
     setFieldError(fieldName, message) {
@@ -869,10 +835,6 @@ export default {
           }
           break;
 
-        case "about":
-          // Убрали лимит символов
-          break;
-
         case "socialNetworks":
           const connectedCount = this.socialNetworks.filter((n) => n.connected).length;
           if (connectedCount === 0) {
@@ -952,129 +914,19 @@ export default {
 <style scoped>
 /* Черный цвет для выбранных значений в селектах */
 .data-select {
-  color: #9F9F9F;
+  color: #9f9f9f;
 }
 
 .data-select.has-value {
-  color: #3F3F3F !important;
+  color: #3f3f3f !important;
 }
 
 /* Стили для option */
 .data-select option {
-  color: #3F3F3F;
+  color: #3f3f3f;
 }
 
 .data-select option:disabled {
-  color: #9F9F9F;
-}
-
-/* Стили для Quill Editor */
-.quill-wrapper {
-  position: relative;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.quill-wrapper.error {
-  border: 2px solid #e74c3c;
-}
-
-/* Кастомизация Quill Editor под ваш дизайн */
-.quill-wrapper :deep(.ql-toolbar) {
-  border: none;
-  border-bottom: 1px solid #e0e0e0;
-  background: #f8f9fa;
-  padding: 10px 15px;
-}
-
-.quill-wrapper :deep(.ql-container) {
-  border: none;
-  font-size: 14px;
-  line-height: 1.6;
-  min-height: 120px;
-  background: #F8F8FC;
-}
-
-.quill-wrapper :deep(.ql-editor) {
-  padding: 20px;
-  color: #3F3F3F;
-  min-height: 120px;
-}
-
-.quill-wrapper :deep(.ql-editor.ql-blank::before) {
-  color: #9F9F9F;
-  font-style: italic;
-}
-
-/* Стили кнопок тулбара */
-.quill-wrapper :deep(.ql-toolbar .ql-formats) {
-  margin-right: 15px;
-}
-
-.quill-wrapper :deep(.ql-toolbar button) {
-  padding: 8px;  /* увеличили с 6px */
-  margin: 2px;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  border: 2px solid transparent;
-  background: transparent;
-  width: 36px;   /* фиксированная ширина */
-  height: 36px;  /* фиксированная высота */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.quill-wrapper :deep(.ql-toolbar button:hover) {
-  background: #e9ecef;
-  transform: translateY(-1px);
-}
-
-/* НОВЫЕ СТИЛИ для активных кнопок - НЕ закрашиваем, а делаем обводку */
-.quill-wrapper :deep(.ql-toolbar button.ql-active) {
-  background: #f0f0ff !important;
-  border: 2px solid #5856D2 !important;
-  color: #5856D2 !important;
-  box-shadow: 0 2px 4px rgba(88, 86, 210, 0.2);
-}
-
-.quill-wrapper :deep(.ql-toolbar button.ql-active:hover) {
-  background: #e8e8ff !important;
-  transform: translateY(-1px);
-}
-
-/* Стили для dropdown'ов (выравнивание и т.д.) */
-.quill-wrapper :deep(.ql-toolbar .ql-picker) {
-  color: #3F3F3F;
-}
-
-.quill-wrapper :deep(.ql-toolbar .ql-picker-label) {
-  border: 2px solid transparent;
-  border-radius: 6px;
-  padding: 6px;
-  transition: all 0.2s ease;
-}
-
-.quill-wrapper :deep(.ql-toolbar .ql-picker-label:hover) {
-  background: #e9ecef;
-}
-
-.quill-wrapper :deep(.ql-toolbar .ql-picker.ql-expanded .ql-picker-label) {
-  background: #f0f0ff !important;
-  border: 2px solid #5856D2 !important;
-  color: #5856D2 !important;
-}
-
-/* Счетчик символов */
-.char-counter {
-  position: absolute;
-  bottom: 10px;
-  right: 15px;
-  font-size: 12px;
-  color: #9F9F9F;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 2px 6px;
-  border-radius: 4px;
-  z-index: 10;
+  color: #9f9f9f;
 }
 </style>

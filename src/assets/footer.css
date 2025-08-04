@@ -336,58 +336,8 @@
   }
 }
 
-@media (max-width: 400px) {
-  .footer {
-    padding-bottom: 85px; /* Чуть больше отступ для маленьких экранов */
-  }
-  
-  .footer-container {
-    padding: 0 10px;
-  }
-  
-  .footer-links {
-    gap: 15px 10px;
-  }
-  
-  .footer-logo img {
-    width: 160px;
-    height: 36px;
-  }
-  
-  .footer-title {
-    font-size: 12px;
-    margin-bottom: 10px;
-  }
-  
-  .footer-list a {
-    font-size: 11px;
-  }
-  
-  .footer-list li {
-    margin-bottom: 6px;
-  }
-  
-  .social-icons {
-    gap: 8px;
-  }
-  
-  .social-link {
-    width: 32px;
-    height: 32px;
-  }
-  
-  .social-link img {
-    width: 32px;
-    height: 32px;
-  }
-  
-  .footer-copyright {
-    font-size: 11px;
-  }
-}
-
-/* Аккордеон для экранов <375px */
-@media (max-width: 375px) {
+/* Аккордеон для экранов <480px (изменено с 375px) */
+@media (max-width: 480px) {
   .footer {
     padding: 30px 0 20px;
     padding-bottom: 90px; /* Увеличенный отступ для аккордеона */
@@ -421,7 +371,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px 0;
+    padding: 12px 0;
     margin-bottom: 0;
     cursor: pointer;
     font-size: 16px;
@@ -488,6 +438,52 @@
   }
 }
 
+@media (max-width: 400px) {
+  .footer {
+    padding-bottom: 85px; /* Чуть больше отступ для маленьких экранов */
+  }
+  
+  .footer-container {
+    padding: 0 10px;
+  }
+  
+  .footer-links {
+    gap: 15px 10px;
+  }
+  
+  .footer-logo img {
+    width: 160px;
+    height: 36px;
+  }
+  
+  .footer-title--mobile {
+    font-size: 15px;
+    padding: 12px 0;
+  }
+  
+  .footer-list--mobile a {
+    font-size: 13px;
+  }
+  
+  .social-icons {
+    gap: 10px;
+  }
+  
+  .social-link {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .social-link img {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .footer-copyright {
+    font-size: 11px;
+  }
+}
+
 @media (max-width: 320px) {
   .footer {
     padding-bottom: 95px; /* Максимальный отступ для очень маленьких экранов */
@@ -500,7 +496,7 @@
   
   .footer-title--mobile {
     font-size: 15px;
-    padding: 18px 0;
+    padding: 12px 0;
   }
   
   .footer-list--mobile a {

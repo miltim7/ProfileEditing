@@ -38,7 +38,7 @@
 
 .breadcrumb-current {
   color: #3F3F3F;
-  font-weight:400;
+  font-weight: 400;
   font-size: 14px;
 }
 
@@ -246,50 +246,6 @@
   margin-bottom: 12px;
 }
 
-.about-section {
-  margin-top: 60px;
-}
-
-.about-section h3 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #3F3F3F;
-  margin-bottom: 15px;
-}
-
-.about-content {
-  position: relative;
-}
-
-.about-textarea {
-  width: 100%;
-  height: 120px;
-  background: #F8F8FC;
-  border: none;
-  border-radius: 10px;
-  padding: 20px;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #3F3F3F;
-  resize: vertical;
-  min-height: 80px;
-  max-height: 300px;
-  font-family: inherit;
-}
-
-.about-textarea::placeholder {
-  color: #9F9F9F;
-}
-
-.about-textarea:focus {
-  outline: 2px solid #5856D2;
-  outline-offset: -2px;
-}
-
-.about-textarea.error {
-  border: 2px solid #e74c3c;
-  background: #fdf2f2;
-}
 
 .char-counter {
   position: absolute;
@@ -501,7 +457,6 @@
 }
 
 .card-input {
-  font-family: monospace;
   letter-spacing: 1px;
 }
 
@@ -608,6 +563,7 @@
 
 /* Большие планшеты и маленькие десктопы (1400px и меньше) */
 @media (max-width: 1400px) {
+
   .breadcrumb-container,
   .edit-profile-container,
   .auth-container,
@@ -620,6 +576,7 @@
 
 /* Средние планшеты (1024px и меньше) */
 @media (max-width: 1024px) {
+
   .edit-profile-container,
   .auth-container,
   .additional-container {
@@ -664,14 +621,6 @@
     font-size: 18px;
   }
 
-  .about-section {
-    margin-top: 40px;
-  }
-
-  .about-section h3 {
-    font-size: 22px;
-  }
-
   /* Формы */
   .input-wrapper {
     width: 400px;
@@ -686,6 +635,10 @@
 
 /* Малые планшеты (768px и меньше) */
 @media (max-width: 768px) {
+  .avatar-note {
+    font-size: 10px;
+  }
+
   .breadcrumb-section {
     padding: 15px 15px 5px 15px;
   }
@@ -694,16 +647,10 @@
     font-size: 13px;
   }
 
-  .edit-profile-section,
-  .auth-section,
-  .additional-section {
-    padding: 20px 15px 5px 15px;
-  }
-
   .edit-profile-container,
   .auth-container,
   .additional-container {
-    padding: 25px 20px;
+    padding: 15px;
     border-radius: 12px;
   }
 
@@ -726,9 +673,13 @@
     padding: 10px;
   }
 
-  /* Убираем аватар из cover-block */
+  /* Перемещаем аватар в мобильной версии */
   .avatar-container {
-    display: none;
+    position: static;
+    left: auto;
+    top: auto;
+    z-index: auto;
+    margin-top: 20px;
   }
 
   /* Grid контейнер */
@@ -736,25 +687,43 @@
     display: grid;
     grid-template-columns: 120px 1fr;
     gap: 20px;
-    align-items: start;
+    align-items: center;
     padding-left: 0;
     margin-bottom: 30px;
     margin-top: 20px;
   }
 
-  .upload-instructions::before {
-    content: '';
-    width: 120px;
-    height: 120px;
-    background: #E9E7F5;
-    border-radius: 50%;
-    border: 4px solid #FFFFFF;
-    background-image: url('/images/famicons_person.png');
-    background-size: 45px 45px;
-    background-repeat: no-repeat;
-    background-position: center;
+  /* Размещаем аватар в гриде */
+  .avatar-container {
     grid-column: 1;
     grid-row: 1;
+  }
+
+  /* Адаптируем размеры аватара для мобильной версии */
+  .avatar-placeholder {
+    width: 120px;
+    height: 120px;
+    border: 4px solid #FFFFFF;
+  }
+
+  .avatar-placeholder img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .avatar-placeholder.has-image .avatar-image {
+    width: 112px !important;
+    height: 112px !important;
+    object-fit: cover !important;
+  }
+
+  /* Уменьшаем кнопку удаления для мобильной версии */
+  .avatar-remove {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    top: -1px;
+    right: -1px;
   }
 
   .requirements {
@@ -764,7 +733,7 @@
     font-size: 13px;
     text-align: left;
     list-style-position: inside;
-    align-self: start;
+    align-self: center;
     line-height: 1.6;
   }
 
@@ -772,20 +741,6 @@
     font-size: 16px;
     text-align: left;
     margin-bottom: 10px;
-  }
-
-  .about-section {
-    margin-top: 30px;
-  }
-
-  .about-section h3 {
-    font-size: 18px;
-  }
-
-  .about-textarea {
-    font-size: 13px;
-    padding: 15px;
-    height: 140px;
   }
 
   .char-counter {
@@ -801,13 +756,13 @@
     align-items: flex-start;
     gap: 8px;
   }
-  
+
   .accounts-row {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
-  
+
   .accounts-row .error-message {
     position: static;
     left: auto;
@@ -844,7 +799,7 @@
     justify-content: flex-start;
     gap: 12px;
   }
-  
+
   .accounts-icons.error {
     padding: 12px;
   }
@@ -869,16 +824,37 @@
 
 /* Мобильные телефоны (480px и меньше) */
 @media (max-width: 480px) {
+  .avatar-note {
+    font-size: 8.5px;
+  }
+
   .upload-instructions {
     margin-top: 20px;
     grid-template-columns: 100px 1fr;
     gap: 15px;
   }
 
-  .upload-instructions::before {
+  /* Адаптируем размеры аватара */
+  .avatar-placeholder {
     width: 100px;
     height: 100px;
-    background-size: 35px 35px;
+  }
+
+  .avatar-placeholder img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .avatar-placeholder.has-image .avatar-image {
+    width: 92px !important;
+    height: 92px !important;
+    object-fit: cover !important;
+  }
+
+  .avatar-remove {
+    width: 16px;
+    height: 16px;
+    font-size: 9px;
   }
 
   .requirements {
@@ -894,7 +870,7 @@
   .accounts-icons {
     gap: 10px;
   }
-  
+
   .accounts-icons.error {
     padding: 10px;
   }
@@ -907,16 +883,38 @@
 
 /* Очень маленькие экраны (360px и меньше) */
 @media (max-width: 360px) {
+  .avatar-note {
+    font-size: 7px;
+    margin-top: 2px;
+  }
+
   .upload-instructions {
     margin-top: 20px;
     grid-template-columns: 80px 1fr;
     gap: 12px;
   }
 
-  .upload-instructions::before {
+  /* Адаптируем размеры аватара */
+  .avatar-placeholder {
     width: 80px;
     height: 80px;
-    background-size: 28px 28px;
+  }
+
+  .avatar-placeholder img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .avatar-placeholder.has-image .avatar-image {
+    width: 72px !important;
+    height: 72px !important;
+    object-fit: cover !important;
+  }
+
+  .avatar-remove {
+    width: 14px;
+    height: 14px;
+    font-size: 8px;
   }
 
   .requirements {
@@ -932,7 +930,7 @@
   .accounts-icons {
     gap: 8px;
   }
-  
+
   .accounts-icons.error {
     padding: 8px;
   }
@@ -1143,28 +1141,28 @@
   .tips-toggle {
     display: inline-block;
   }
-  
+
   .desktop-tip {
     display: none;
   }
-  
+
   /* Центрируем заголовок когда tips НЕ показаны */
   .requirements:not(.tips-expanded) {
     display: flex;
     align-items: center;
     height: 120px;
   }
-  
+
   .requirements:not(.tips-expanded) .upload-title {
     margin: 0;
   }
-  
+
   /* Когда tips показаны */
   .requirements.tips-expanded {
     display: block;
     height: auto;
   }
-  
+
   .requirements.tips-expanded .upload-title {
     margin-bottom: 10px;
   }
@@ -1175,15 +1173,15 @@
   .requirements:not(.tips-expanded) {
     height: 100px;
   }
-  
+
   .requirements:not(.tips-expanded) .upload-title {
     font-size: 14px;
   }
-  
+
   .requirements.tips-expanded .upload-title {
     font-size: 14px;
   }
-  
+
   .tips-toggle {
     width: 18px;
     height: 18px;
@@ -1196,15 +1194,15 @@
   .requirements:not(.tips-expanded) {
     height: 80px;
   }
-  
+
   .requirements:not(.tips-expanded) .upload-title {
     font-size: 13px;
   }
-  
+
   .requirements.tips-expanded .upload-title {
     font-size: 13px;
   }
-  
+
   .tips-toggle {
     width: 16px;
     height: 16px;
@@ -1219,286 +1217,38 @@
   }
 }
 
-.rich-editor-wrapper {
-  border: 2px solid #5856D2;
-  border-radius: 10px;
-}
-
-/* Стили ошибок для Rich Editor */
-.rich-editor-wrapper.error {
-  border-color: #e74c3c;
-}
-
-.editor-toolbar {
-  background: #f8f9fa;
-  padding: 8px 12px;
-  border-bottom: 1px solid #ddd;
-  border-radius: 10px 10px 0 0;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-wrap: wrap;
-}
-
-.editor-toolbar button {
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  padding: 6px 8px;
-  cursor: pointer;
-  font-size: 14px;
-  min-width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #495057;
-  transition: all 0.2s ease;
-}
-
-.editor-toolbar button:hover {
-  background: #e9ecef;
-  border-color: #adb5bd;
-}
-
-.editor-toolbar button svg {
-  width: 16px;
-  height: 16px;
-}
-
 .separator {
   color: #ccc;
   margin: 0 4px;
 }
 
-.rich-editor {
-  min-height: 120px;
-  max-height: 250px;
-  padding: 20px;
-  outline: none;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #3F3F3F;
-  overflow-y: auto;
-}
-
-/* Стили для списков */
-.rich-editor ul {
-  padding-left: 25px;
-  margin: 10px 0;
-}
-
-.rich-editor ol {
-  padding-left: 25px;
-  margin: 10px 0;
-}
-
-.rich-editor li {
-  margin-bottom: 5px;
-}
-
-.rich-editor ul li {
-  list-style-position: outside;
-  list-style-type: disc;
-}
-
-.rich-editor ol li {
-  list-style-position: outside;
-  list-style-type: decimal;
-}
-
-/* ========== АДАПТИВНЫЕ СТИЛИ ДЛЯ RICH EDITOR ========== */
-
 /* Планшеты (768px и меньше) */
 @media (max-width: 768px) {
-  .rich-editor-wrapper {
-    border-radius: 8px;
-  }
-  
-  .editor-toolbar {
-    padding: 6px 10px;
-    gap: 3px;
-    border-radius: 8px 8px 0 0;
-  }
-  
-  .editor-toolbar button {
-    min-width: 28px;
-    height: 28px;
-    padding: 4px 6px;
-    font-size: 13px;
-  }
-  
-  .editor-toolbar button svg {
-    width: 14px;
-    height: 14px;
-  }
-  
   .separator {
     margin: 0 3px;
-  }
-  
-  .rich-editor {
-    padding: 15px;
-    font-size: 13px;
-    min-height: 100px;
-    max-height: 200px;
-  }
-  
-  .rich-editor ul,
-  .rich-editor ol {
-    padding-left: 20px;
-    margin: 8px 0;
   }
 }
 
 /* Мобильные (480px и меньше) */
 @media (max-width: 480px) {
-  .editor-toolbar {
-    padding: 5px 8px;
-    gap: 2px;
-  }
-  
-  .editor-toolbar button {
-    min-width: 24px;
-    height: 24px;
-    padding: 3px 4px;
-    font-size: 12px;
-  }
-  
-  .editor-toolbar button svg {
-    width: 12px;
-    height: 12px;
-  }
-  
   .separator {
     margin: 0 2px;
     font-size: 12px;
-  }
-  
-  .rich-editor {
-    padding: 12px;
-    font-size: 12px;
-    min-height: 80px;
-    line-height: 1.5;
-  }
-  
-  .rich-editor ul,
-  .rich-editor ol {
-    padding-left: 18px;
-    margin: 6px 0;
-  }
-  
-  .rich-editor li {
-    margin-bottom: 3px;
   }
 }
 
 /* Очень маленькие экраны (360px и меньше) */
 @media (max-width: 360px) {
-  .editor-toolbar {
-    padding: 4px 6px;
-    gap: 1px;
-  }
-  
-  .editor-toolbar button {
-    min-width: 20px;
-    height: 20px;
-    padding: 2px 3px;
-    font-size: 11px;
-  }
-  
-  .editor-toolbar button svg {
-    width: 10px;
-    height: 10px;
-  }
-  
   .separator {
     margin: 0 1px;
     font-size: 10px;
-  }
-  
-  .rich-editor {
-    padding: 10px;
-    font-size: 11px;
-    min-height: 70px;
-    line-height: 1.4;
-  }
-  
-  .rich-editor ul,
-  .rich-editor ol {
-    padding-left: 15px;
-    margin: 5px 0;
-  }
-  
-  /* Скрываем некоторые кнопки на очень маленьких экранах */
-  .editor-toolbar button[title="Убрать отступ"],
-  .editor-toolbar button[title="Добавить отступ"] {
-    display: none;
   }
 }
 
 /* Очень узкие экраны (320px и меньше) */
 @media (max-width: 320px) {
-  .editor-toolbar {
-    padding: 3px 5px;
-  }
-  
-  .editor-toolbar button {
-    min-width: 18px;
-    height: 18px;
-    padding: 1px 2px;
-  }
-  
-  .editor-toolbar button svg {
-    width: 9px;
-    height: 9px;
-  }
-  
-  .rich-editor {
-    padding: 8px;
-    font-size: 10px;
-    min-height: 60px;
-  }
-  
-  /* Скрываем больше кнопок */
-  .editor-toolbar button[title="Зачеркивание"],
-  .editor-toolbar button[title="По центру"],
-  .editor-toolbar button[title="По правому краю"] {
-    display: none;
-  }
-  
   /* Группируем сепараторы */
   .separator:nth-of-type(n+3) {
     display: none;
-  }
-}
-
-/* Landscape ориентация для мобильных */
-@media (max-width: 768px) and (orientation: landscape) {
-  .rich-editor {
-    min-height: 60px;
-  }
-  
-  .editor-toolbar {
-    padding: 4px 8px;
-  }
-  
-  .editor-toolbar button {
-    min-width: 26px;
-    height: 26px;
-  }
-}
-
-/* Touch устройства - увеличиваем область нажатия */
-@media (hover: none) and (pointer: coarse) {
-  .editor-toolbar button {
-    min-width: 36px;
-    height: 36px;
-    padding: 8px;
-  }
-  
-  .editor-toolbar button svg {
-    width: 16px;
-    height: 16px;
   }
 }
