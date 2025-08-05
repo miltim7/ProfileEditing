@@ -3,21 +3,21 @@
 <template>
   <div>
     <Header />
-    <Profile />
+    <ProfileEditing />
     <Footer />
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
-import Profile from './components/Profile.vue'
+import ProfileEditing from './components/ProfileEditing.vue'
 import Footer from './components/Footer.vue'
 
 export default {
   name: 'App',
   components: {
     Header,
-    Profile,
+    ProfileEditing,
     Footer
   }
 }

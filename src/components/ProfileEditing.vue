@@ -423,7 +423,7 @@
 import AboutSection from './AboutSection.vue';
 
 export default {
-  name: "Profile",
+  name: "ProfileEditing",
   components: {
     AboutSection,
   },
