@@ -19,11 +19,9 @@
               </span>
             </h4>
             <ul class="footer-list" :class="{ 'footer-list--mobile': isMobile, 'footer-list--open': openColumns[0] }">
-              <li><a href="">Каталог работ</a></li>
-              <li><a href="">Условия сделок</a></li>
-              <li><a href="">Частые вопросы</a></li>
-              <li><a href="">Доставка и оплата</a></li>
-              <li><a href="">Оферта</a></li>
+              <li><a href="">Каталог</a></li>
+              <li><a href="">Как купить</a></li>
+              <li><a href="">Безопасная сделка</a></li>
             </ul>
           </div>
           <div class="footer-column" :class="{ 'footer-column--mobile': isMobile }">
@@ -37,11 +35,9 @@
               </span>
             </h4>
             <ul class="footer-list" :class="{ 'footer-list--mobile': isMobile, 'footer-list--open': openColumns[1] }">
-              <li><a href="">Войти</a></li>
-              <li><a href="">Тарифы</a></li>
+              <li><a href="">Вход</a></li>
               <li><a href="">Как продать</a></li>
-              <li><a href="">Справка</a></li>
-              <li><a href="">Реклама</a></li>
+              <li><a href="">Партнерам</a></li>
             </ul>
           </div>
           <div class="footer-column" :class="{ 'footer-column--mobile': isMobile }">
@@ -55,11 +51,10 @@
               </span>
             </h4>
             <ul class="footer-list" :class="{ 'footer-list--mobile': isMobile, 'footer-list--open': openColumns[2] }">
-              <li><a href="">Разместить событие</a></li>
-              <li><a href="">Творцы</a></li>
-              <li><a href="">Реклама</a></li>
-              <li><a href="">Афиши</a></li>
-              <li><a href="">Партнеры</a></li>
+              <li><a href="">О нас</a></li>
+              <li><a href="">Новости</a></li>
+              <li><a href="">Правила</a></li>
+              <li><a href="">Оферта</a></li>
             </ul>
           </div>
           <div class="footer-column" :class="{ 'footer-column--mobile': isMobile }">
@@ -86,16 +81,19 @@
       <div class="footer-social">
         <div class="social-icons">
           <a href="" class="social-link">
-            <img src="/images/Youtube.png" alt="YouTube" />
+            <img src="/images/Telegram.png" alt="Telegram" />
+          </a>
+          <a href="" class="social-link">
+            <img src="/images/FacebookFooter.png" alt="Facebook" />
           </a>
           <a href="" class="social-link">
             <img src="/images/VK.png" alt="VK" />
           </a>
           <a href="" class="social-link">
-            <img src="/images/WhatsApp.png" alt="WhatsApp" />
+            <img src="/images/InstagramFooter.png" alt="Instagram" />
           </a>
           <a href="" class="social-link">
-            <img src="/images/Telegram.png" alt="Telegram" />
+            <img src="/images/PinterestFooter.png" alt="Pinterest" />
           </a>
         </div>
       </div>
@@ -122,7 +120,7 @@ export default {
       this.$forceUpdate();
     },
     checkMobile() {
-      this.isMobile = window.innerWidth < 375;
+      this.isMobile = window.innerWidth < 480;
     }
   },
   mounted() {

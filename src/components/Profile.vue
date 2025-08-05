@@ -133,7 +133,7 @@
 
   <section class="auth-section">
     <div class="auth-container">
-      <h1 class="auth-title">Данные для авторизации</h1>
+      <h1 class="auth-title">Данные пользователя</h1>
 
       <div class="data-table">
         <div class="data-row">

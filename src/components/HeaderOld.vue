@@ -1,4 +1,3 @@
-<!-- src/components/Header.vue -->
 <template>
   <header class="header header--user">
     <div class="header-top">

@@ -328,7 +328,6 @@ export default {
   position: relative;
   border-radius: 10px;
   overflow: hidden;
-  resize: vertical;
   min-height: 180px;
 }
 
@@ -352,7 +351,6 @@ export default {
   max-height: 300px;
   background: #f8f8fc;
   overflow-y: auto;
-  resize: vertical;
   scroll-behavior: smooth;
   position: relative;
 }
@@ -686,8 +684,6 @@ export default {
 
 /* Адаптивные стили */
 @media (max-width: 768px) {
-    
-
   .about-section {
     margin-top: 40px;
   }
